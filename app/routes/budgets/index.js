@@ -10,14 +10,14 @@ export default Route.extend({
       selectedBudgetId = allBudgets.get('firstObject').get('id');
     }
 
-    const matchingBudget = this.store.peekRecord('budget', selectedBudgetId);
-
-    return RSVP.hash({
-      budget: matchingBudget,
-      transactions: this.store.query('transaction', {
-        filter: {
-          budgetType: matchingBudget.get('name')
-        }
+    return this.store.findRecord('budget', selectedBudgetId).then(budget => {
+      return RSVP.hash({
+        budget,
+        transactions: this.store.query('transaction', {
+          filter: {
+            budgetType: budget.get('name')
+          }
+        })
       })
     });
   }

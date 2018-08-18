@@ -30,6 +30,7 @@ export default function() {
 
   this.get('/users/:id');
   this.get('/budgets');
+  this.get('/budgets/:id');
   this.get('/transactions');
 
   this.passthrough();
