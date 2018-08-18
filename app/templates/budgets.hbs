@@ -1,4 +1,4 @@
-<header class='budget-header row align-center justify-center'>
+<header class='header row align-center justify-center'>
   <select onchange={{action 'selectBudget' value='target.value'}}>
     {{#each sortedBudgets as |budgetChoice|}}
       <option value={{budgetChoice.id}} selected={{eq (parse-int budgetChoice.id) (parse-int selectedBudgetId)}}>{{budgetChoice.name}}</option>

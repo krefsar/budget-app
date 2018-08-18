@@ -1,1 +1,55 @@
-{{outlet}}
+<header class='header row align-center justify-center'>
+  <h1>Add Transaction</h1>
+</header>
+
+<div class='column page'>
+  <div class='transaction-form'>
+    <h1>Transaction amount</h1>
+    <div class='row align-center justify-center'>${{input type='number' value=transactionAmount onChange=(action (mut transactionAmount))}}</div>
+  </div>
+
+  <div class='transaction-form'>
+    <h1>Type</h1>
+    
+    <div class='column'>
+      {{#radio-button
+        classNames='text--positive'
+        value='income'
+        groupValue=transactionType
+        changed='transactionTypeChanged'}}
+        Income
+      {{/radio-button}}
+
+      {{#radio-button
+        classNames='text--negative'
+        value='expense'
+        groupValue=transactionType
+        changed='transactionTypeChanged'}}
+        Expense
+      {{/radio-button}}
+    </div>
+  </div>
+
+  {{#if (eq transactionType 'expense')}}
+    <div class='transaction-form'>
+      <h1>Budget</h1>
+
+      <select onchange={{action 'selectBudget' value='target.value'}}>
+        {{#each sortedBudgets as |budgetChoice|}}
+          <option value={{budgetChoice.name}} selected={{eq budgetChoice.name selectedBudgetName}}>{{budgetChoice.name}}</option>
+        {{/each}}
+      </select>
+    </div>
+  {{/if}}
+
+  <div class='transaction-form'>
+    <h1>Memo</h1>
+    <div>{{textarea value=transactionMemo onChange=(action (mut transactionMemo))}}</div>
+  </div>
+
+  <div class='row align-center justify-center'>
+    <button {{action 'submitTransaction'}} disabled={{lte transactionAmount 0}}>
+      Submit
+    </button>
+  </div>
+</div>

@@ -32,6 +32,7 @@ export default function() {
   this.get('/budgets');
   this.get('/budgets/:id');
   this.get('/transactions');
+  this.post('/transactions');
 
   this.passthrough();
 }

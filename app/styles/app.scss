@@ -14,7 +14,7 @@ html {
   height: 100vh;
 }
 
-.header {
+.app-header {
   background-color: $budgetgreen;
   border-bottom: 2px solid black;
   color: white;
@@ -78,10 +78,25 @@ html {
   }
 }
 
-.budget-header {
+.header {
   border-bottom: 2px solid black;
   padding: 1rem;
   font-size: 3rem;
+}
+
+.transaction-form {
+  font-size: 3rem;
+  margin: 1rem;
+
+  h1 {
+    font-size: 4rem;
+    text-decoration: underline;
+    margin-bottom: 1rem;
+  }
+
+  input {
+    margin: 0 1rem;
+  }
 }
 
 .text--positive {
