@@ -24,12 +24,22 @@ export default Controller.extend({
       };
 
       if (this.get('transactionType') === 'expense') {
-
         newTransaction.budgetType = this.get('selectedBudgetName');
+        newTransaction.amount = -1 * newTransaction.amount;
       }
 
       this.store.createRecord('transaction', newTransaction).save().then(() => {
         console.log('new transaction created')
+        this.send('resetForm');
+      });
+    },
+
+    resetForm() {
+      this.setProperties({
+        selectedBudgetName: null,
+        transactionAmount: 0,
+        transactionType: 'expense',
+        transactionMemo: ''
       });
     },
 
