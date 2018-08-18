@@ -64,19 +64,11 @@ html {
   font-size: 2rem;
 }
 
-.text--inverted {
-  color: white;
-}
-
-.text--positive {
-  color: $budgetgreen;
-}
-
-.text--negative {
-  color: $budgetred;
-}
-
 .budget-remaining {
+  background-color: $budgetblack;
+  color: white;
+  padding: 2rem 0;
+
   h1 {
     font-size: 8rem;
   }
@@ -90,4 +82,16 @@ html {
   border-bottom: 2px solid black;
   padding: 1rem;
   font-size: 3rem;
+}
+
+.text--positive {
+  color: $budgetgreen;
+}
+
+.text--negative {
+  color: $budgetred;
+}
+
+.text--inverted {
+  color: white;
 }

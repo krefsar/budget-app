@@ -1,6 +1,6 @@
 <div class='column budget-container page'>
   <div class='budget-remaining column align-center'>
-    <h1 class='{{if (lte budget.remaining 0) text--negative text--positive}}'>${{to-fixed budget.remaining 2}}</h1>
+    <h1 class='{{if (lte budget.remaining 0) "text--negative" "text--positive"}}'>${{to-fixed budget.remaining 2}}</h1>
     <p>remaining for {{budget.name}}</p>
   </div>
 
