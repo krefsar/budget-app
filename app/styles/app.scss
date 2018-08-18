@@ -1,0 +1,93 @@
+@import 'reset';
+@import 'flex';
+
+$budgetgreen: #64b64a;
+$budgetblack: #233d4d;
+$budgetred: #d81159;
+$budgetblue: #5bc0eb;
+
+html {
+  font-size: 8px;
+}
+
+.app-container {
+  height: 100vh;
+}
+
+.header {
+  background-color: $budgetgreen;
+  border-bottom: 2px solid black;
+  color: white;
+  font-size: 2rem;
+  height: 5rem;
+  padding: 0 0.5rem;
+}
+
+.nav {
+  border-top: 2px solid black;
+  height: 5rem;
+}
+
+.nav-link {
+  display: inline-block;
+  text-decoration: none;
+  color: black;
+
+  &.active {
+    background-color: $budgetblue;
+    color: white;
+  }
+}
+.nav-item {
+  font-size: 1.5rem;
+  height: 100%;
+}
+
+.nav-icon {
+  margin: 0.5rem 0;
+}
+
+.overview-container {
+  background-color: $budgetblack;
+}
+
+.page {
+  height: 100%;
+}
+
+.overview-chart {
+  margin: 1rem 0;
+}
+
+.overview-text {
+  margin: 1rem 0;
+  font-size: 2rem;
+}
+
+.text--inverted {
+  color: white;
+}
+
+.text--positive {
+  color: $budgetgreen;
+}
+
+.text--negative {
+  color: $budgetred;
+}
+
+.budget-remaining {
+  h1 {
+    font-size: 8rem;
+  }
+  
+  p {
+    font-size: 2rem;
+  }
+}
+
+.budget-header {
+  border-bottom: 2px solid black;
+  padding: 1rem;
+  font-size: 3rem;
+}
