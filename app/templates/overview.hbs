@@ -1,4 +1,4 @@
 <div class='column flex overview-container align-center justify-center'>
   <h1 class='{{if (lte user.balance 0) "text--negative" "text--positive"}}'>{{to-dollars user.balance}}</h1>
-  <p class='text--inverted'>remaining</p>
+  <p class='text--inverted'>remaining ({{to-dollars budgetBalance}} budgeted)</p>
 </div>
