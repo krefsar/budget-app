@@ -10,7 +10,7 @@ export default Controller.extend({
 
   selectedBudgetId: null,
   transactionAmount: 0,
-  transactionType: 'income',
+  transactionType: 'expense',
   transactionMemo: '',
 
   budgets: computed.alias('model.budgets'),
@@ -57,7 +57,7 @@ export default Controller.extend({
       return budget.get('id') === this.get('selectedBudgetId');
     });
 
-    return matchingBudget.get('remaining');
+    return matchingBudget.get('budget');
   }),
 
   remainingBudget: computed('currentBudget', 'transactionAmount', function() {
@@ -88,7 +88,20 @@ export default Controller.extend({
     },
 
     submitIncome() {
+      const matchingExpenses = this.get('expenses').filter(expense => {
+        return this.get('selectedExpenses').includes(expense.get('id'));
+      });
 
+      const newTransaction = this.store.createRecord('transaction', {
+        memo: this.get('transactionMemo'),
+        date: moment().toDate(),
+        amount: this.get('transactionAmount'),
+        expenses: matchingExpenses
+      })
+        .save()
+        .then(() => {
+          this.send('resetForm');
+        });
     },
 
     submitExpense() {

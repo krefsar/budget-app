@@ -4,8 +4,16 @@ import RSVP from 'rsvp';
 export default Route.extend({
   model() {
     return RSVP.hash({
-      budgets: this.modelFor('application'),
+      budgets: this.store.findAll('budget'),
       expenses: this.store.findAll('expense')
     });
+  },
+
+  setupController(controller, model) {
+    this._super(controller, model);
+
+    const budgets = model.budgets;
+    const firstBudget = budgets.get('firstObject');
+    controller.set('selectedBudgetId', firstBudget.get('id'));
   }
 });

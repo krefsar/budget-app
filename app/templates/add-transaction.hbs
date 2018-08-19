@@ -50,7 +50,7 @@
             {{input type='checkbox' change=(action 'toggleExpense' expense.id) checked=(find-in selectedExpenses expense.id)}}
             <div class='column'>
               <span class='expense-info'>{{expense.name}}</span>
-              <span class='expense-due'>${{to-fixed expense.amount 2}} - Due {{moment-format (now) 'M'}}/{{expense.dueDay}}</span>
+              <span class='expense-due'>{{to-dollars expense.amount}} - Due {{moment-format (now) 'M'}}/{{expense.dueDay}}</span>
             </div>
           </div>
         {{/each}}
@@ -64,37 +64,39 @@
   </div>
 
   <div class='transaction-form'>
-    <table>
-      {{#if (eq transactionType 'income')}}
+    {{#if (eq transactionType 'income')}}
+      <table>
         <tr>
           <td>Income</td>
-          <td>{{to-fixed transactionAmount 2}}</td>
+          <td>{{to-dollars transactionAmount}}</td>
         </tr>
           <td>Expenses</td>
-          <td>{{to-fixed expenseAmount 2}}</td>
+          <td>{{to-dollars expenseAmount}}</td>
         <tr>
           <td>Budget allocation</td>
-          <td>{{to-fixed budgetAllocation 2}}</td>
+          <td>{{to-dollars budgetAllocation}}</td>
         </tr>
         <tr>
           <td>Remaining</td>
-          <td>{{to-fixed remainingIncome 2}}</td>
+          <td>{{to-dollars remainingIncome}}</td>
         </tr>
-      {{else}}
+      </table>
+    {{else}}
+      <table>
         <tr>
           <td>Budget before</td>
-          <td>{{to-fixed currentBudget}}</td>
+          <td>{{to-dollars currentBudget}}</td>
         </tr>
         <tr>
           <td>Transaction amount</td>
-          <td>{{to-fixed transactionAmount}}</td>
+          <td>{{to-dollars transactionAmount}}</td>
         </tr>
         <tr>
           <td>Budget remaining</td>
-          <td>{{to-fixed remainingBudget}}</td>
+          <td>{{to-dollars remainingBudget}}</td>
         </tr>
-      {{/if}}
-    </table>
+      </table>
+    {{/if}}
   </div>
 
   <div class='submit-button'>
