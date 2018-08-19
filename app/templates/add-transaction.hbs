@@ -48,9 +48,9 @@
         {{#each sortedExpenses as |expense|}}
           <div class='row align-center' {{action 'toggleExpense' expense.id}}>
             {{#if expense.selected}}
-              {{fa-icon 'check-circle'}}
+              {{fa-icon 'check-square'}}
             {{else}}
-              {{fa-icon 'circle-o'}}
+              {{fa-icon 'square-o'}}
             {{/if}}
             <div class='column expense'>
               <span class='expense-info'>{{expense.name}}</span>
@@ -104,7 +104,7 @@
   </div>
 
   <div class='submit-button'>
-    <button {{action 'submitTransaction'}} disabled={{lte transactionAmount 0}}>
+    <button {{action 'submitTransaction'}}>
       Submit
     </button>
   </div>
