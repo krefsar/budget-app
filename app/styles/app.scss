@@ -125,3 +125,25 @@ html {
 .text--inverted {
   color: white;
 }
+
+.transactiontable {
+  border-collapse: collapse;
+
+  tr {
+    border-bottom: 2px solid black;
+  }
+
+  td {
+    font-size: 2rem;
+    padding: 1rem;
+    vertical-align: middle;
+  }
+}
+
+.transactiontable-date {
+  width: 20%;
+}
+
+.transactiontable-amount {
+  width: 20%;
+}

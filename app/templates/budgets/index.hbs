@@ -4,9 +4,13 @@
     <p>remaining for {{budget.name}}</p>
   </div>
 
-  <div class='budget-transactions column'>
-    {{#each transactions as |transaction|}}
-      {{transaction.amount}}
+  <table class='transactiontable'>
+    {{#each sortedTransactions as |transaction|}}
+      <tr class='transactiontable-row'>
+        <td class='transactiontable-date'>{{moment-format transaction.date 'M/D/YY'}}</td>
+        <td class='transactiontable-memo'>{{transaction.memo}}</td>
+        <td class='transactiontable-amount'>{{to-dollars transaction.amount}}</td>
+      </tr>
     {{/each}}
-  </div>
+  </table>
 </div>
