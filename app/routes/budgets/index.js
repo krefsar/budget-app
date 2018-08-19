@@ -10,15 +10,8 @@ export default Route.extend({
       selectedBudgetId = allBudgets.get('firstObject').get('id');
     }
 
-    return this.store.findRecord('budget', selectedBudgetId).then(budget => {
-      return RSVP.hash({
-        budget,
-        transactions: this.store.query('transaction', {
-          filter: {
-            budgetType: budget.get('name')
-          }
-        })
-      })
+    return this.store.findRecord('budget', selectedBudgetId, {
+      include: 'transactions'
     });
   }
 });

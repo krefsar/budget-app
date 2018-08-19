@@ -54,11 +54,9 @@ export default Controller.extend({
 
   currentBudget: computed('selectedBudgetId', 'budgets.[]', function() {
     const matchingBudget = this.get('budgets').find(budget => {
-      console.log('comparing', typeof budget.get('id'), budget.get('id'), typeof this.get('selectedBudgetId'), this.get('selectedBudgetId'));
       return budget.get('id') === this.get('selectedBudgetId');
     });
 
-    console.log('matchingBudget', matchingBudget.get('name'));
     return matchingBudget.get('remaining');
   }),
 
@@ -82,25 +80,39 @@ export default Controller.extend({
     },
 
     submitTransaction() {
-      const newTransaction = {
-        memo: this.get('transactionMemo'),
-        amount: this.get('transactionAmount'),
-        date: moment().toDate()
-      };
-
-      if (this.get('transactionType') === 'expense') {
-        newTransaction.budgetType = this.get('selectedBudgetId');
-        newTransaction.amount = -1 * newTransaction.amount;
+      if (this.get('transactionType') === 'income') {
+        this.send('submitIncome');
+      } else {
+        this.send('submitExpense');
       }
+    },
 
-      this.store.createRecord('transaction', newTransaction).save().then(() => {
-        this.send('resetForm');
+    submitIncome() {
+
+    },
+
+    submitExpense() {
+      const matchingBudget = this.get('budgets').find(budget => {
+        return budget.get('id') === this.get('selectedBudgetId');
       });
+
+      const newTransaction = this.store.createRecord('transaction', {
+        memo: this.get('transactionMemo'),
+        amount: this.get('transactionAmount') * -1,
+        budget: matchingBudget,
+        date: moment().toDate()
+      })
+        .save()
+        .then(() => {
+          this.send('resetForm');
+        })
     },
 
     resetForm() {
+      const firstBudget = this.get('sortedBudgets').get('firstObject');
+
       this.setProperties({
-        selectedBudgetId: null,
+        selectedBudgetId: firstBudget.get('id'),
         transactionAmount: 0,
         transactionType: 'expense',
         transactionMemo: ''
