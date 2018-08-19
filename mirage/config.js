@@ -48,22 +48,21 @@ export default function() {
       const prevExpenditure = user.expenditure;
       user.update('expenditure', prevExpenditure + Math.abs(amount));
     } else {
-      const budgetAllocation = db.budgets.reduce((count, budget) => {
+      db.budgets.forEach(budget => {
         const prevBudget = budget.budget;
         const update = budget.percentage * amount;
 
-        const budgetModel = budgets.find(budget.id);
-        budgetModel.update('budget', prevBudget + update);
-
-        return count + update;
-      }, 0);
+        db.budgets.update(budget.id, {
+          budget: prevBudget + update
+        });
+      });
 
       const expenseAllocation = expenseIds.reduce((count, expenseId) => {
         const matchingExpense = expenses.find(expenseId);
         return count + matchingExpense.amount;
       }, 0);
 
-      const userUpdate = amount - expenseAllocation - budgetAllocation;
+      const userUpdate = amount - expenseAllocation;
       const prevIncome = user.income;
       user.update('income', prevIncome + userUpdate);
     }

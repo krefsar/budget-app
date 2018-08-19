@@ -1,5 +1,4 @@
-<div class='column flex overview-container align-center'>
-  {{ember-chart class='overview-chart' type='doughnut' data=balanceData width=100 height=100 options=chartOptions }}
-
-  <h2 class='overview-text text--inverted'>{{scheduling.nextPaydayDays}} {{if (eq scheduling.nextPaydayDays 1) 'day' 'days'}} until next payday</h2>
+<div class='column flex overview-container align-center justify-center'>
+  <h1 class='{{if (lte user.balance 0) "text--negative" "text--positive"}}'>{{to-dollars user.balance}}</h1>
+  <p class='text--inverted'>remaining</p>
 </div>
