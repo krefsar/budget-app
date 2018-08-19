@@ -46,9 +46,13 @@
 
       <div class='column'>
         {{#each sortedExpenses as |expense|}}
-          <div class='row align-center'>
-            {{input type='checkbox' name=expense.id click=(action 'toggleExpense' expense.id) checked=(find-in selectedExpenses expense.id)}}
-            <div class='column'>
+          <div class='row align-center' {{action 'toggleExpense' expense.id}}>
+            {{#if expense.selected}}
+              {{fa-icon 'check-circle'}}
+            {{else}}
+              {{fa-icon 'circle-o'}}
+            {{/if}}
+            <div class='column expense'>
               <span class='expense-info'>{{expense.name}}</span>
               <span class='expense-due'>{{to-dollars expense.amount}} - Due {{moment-format (now) 'M'}}/{{expense.dueDay}}</span>
             </div>
