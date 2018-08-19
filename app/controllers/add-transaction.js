@@ -56,7 +56,7 @@ export default Controller.extend({
     return this.get('transactionAmount') - this.get('expenseAmount') - this.get('budgetAllocation');
   }),
 
-  currentBudget: computed('selectedBudgetId', 'budgets.[]', function() {
+  currentBudget: computed('selectedBudgetId', 'budgets.@each.budget', function() {
     const matchingBudget = this.get('budgets').find(budget => {
       return budget.get('id') === this.get('selectedBudgetId');
     });
@@ -136,6 +136,8 @@ export default Controller.extend({
           content: A()
         })
       });
+
+      this.send('refresh');
     },
 
     transactionTypeChanged(type) {

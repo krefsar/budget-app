@@ -21,5 +21,11 @@ export default Route.extend({
     const budgets = model.budgets;
     const firstBudget = budgets.get('firstObject');
     controller.set('selectedBudgetId', firstBudget.get('id'));
+  },
+
+  actions: {
+    refresh() {
+      this.refresh();
+    }
   }
 });
