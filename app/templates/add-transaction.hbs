@@ -2,7 +2,7 @@
   <h1>Add Transaction</h1>
 </header>
 
-<div class='column page'>
+<div class='column flex scroll'>
   <div class='transaction-form'>
     <h1>Transaction amount</h1>
     <div class='row align-center justify-center'>${{input type='number' value=transactionAmount onChange=(action (mut transactionAmount))}}</div>
@@ -63,7 +63,7 @@
     <div>{{textarea value=transactionMemo onChange=(action (mut transactionMemo))}}</div>
   </div>
 
-  <div class='transaction-form column align-center'>
+  <div class='transaction-form'>
     <table>
       {{#if (eq transactionType 'income')}}
         <tr>
@@ -97,7 +97,7 @@
     </table>
   </div>
 
-  <div class='row align-center justify-center'>
+  <div class='submit-button'>
     <button {{action 'submitTransaction'}} disabled={{lte transactionAmount 0}}>
       Submit
     </button>

@@ -11,7 +11,7 @@ html {
 }
 
 .app-container {
-  min-height: 100vh;
+  height: 100vh;
 }
 
 .app-header {
@@ -24,8 +24,12 @@ html {
 }
 
 .nav {
+  background-color: white;
   border-top: 2px solid black;
   height: 5rem;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 
 .nav-link {
@@ -49,10 +53,6 @@ html {
 
 .overview-container {
   background-color: $budgetblack;
-}
-
-.page {
-  height: 100%;
 }
 
 .overview-chart {
@@ -126,6 +126,10 @@ html {
   color: white;
 }
 
+.scroll {
+  overflow-y: scroll;
+}
+
 .transactiontable {
   border-collapse: collapse;
 
@@ -146,4 +150,13 @@ html {
 
 .transactiontable-amount {
   width: 20%;
+}
+
+.page {
+  margin-bottom: 5rem;
+}
+
+.submit-button {
+  margin: 0 auto;
+  padding: 1rem;
 }

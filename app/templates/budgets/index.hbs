@@ -1,16 +1,18 @@
-<div class='column budget-container page'>
+<div class='column budget-container flex'>
   <div class='budget-remaining column align-center'>
     <h1 class='{{if (lte budget.remaining 0) "text--negative" "text--positive"}}'>${{to-fixed budget.remaining 2}}</h1>
     <p>remaining for {{budget.name}}</p>
   </div>
 
-  <table class='transactiontable'>
-    {{#each sortedTransactions as |transaction|}}
-      <tr class='transactiontable-row'>
-        <td class='transactiontable-date'>{{moment-format transaction.date 'M/D/YY'}}</td>
-        <td class='transactiontable-memo'>{{transaction.memo}}</td>
-        <td class='transactiontable-amount'>{{to-dollars transaction.amount}}</td>
-      </tr>
-    {{/each}}
-  </table>
+  <div class='scroll flex'>
+    <table class='transactiontable'>
+      {{#each sortedTransactions as |transaction|}}
+        <tr class='transactiontable-row'>
+          <td class='transactiontable-date'>{{moment-format transaction.date 'M/D/YY'}}</td>
+          <td class='transactiontable-memo'>{{transaction.memo}}</td>
+          <td class='transactiontable-amount'>{{to-dollars transaction.amount}}</td>
+        </tr>
+      {{/each}}
+    </table>
+  </div>
 </div>

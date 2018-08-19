@@ -1,9 +1,11 @@
-<header class='header row align-center justify-center'>
-  <select onchange={{action 'selectBudget' value='target.value'}}>
-    {{#each sortedBudgets as |budgetChoice|}}
-      <option value={{budgetChoice.id}} selected={{eq (parse-int budgetChoice.id) (parse-int selectedBudgetId)}}>{{budgetChoice.name}}</option>
-    {{/each}}
-  </select>
-</header>
+<div class='flex column'>
+  <header class='header row align-center justify-center'>
+    <select onchange={{action 'selectBudget' value='target.value'}}>
+      {{#each sortedBudgets as |budgetChoice|}}
+        <option value={{budgetChoice.id}} selected={{eq (parse-int budgetChoice.id) (parse-int selectedBudgetId)}}>{{budgetChoice.name}}</option>
+      {{/each}}
+    </select>
+  </header>
 
-{{outlet}}
+  {{outlet}}
+</div>
