@@ -2,6 +2,12 @@ import Route from '@ember/routing/route';
 import RSVP from 'rsvp';
 
 export default Route.extend({
+  queryParams: {
+    transactionType: {
+      refreshModel: true
+    }
+  },
+
   model() {
     return RSVP.hash({
       budgets: this.store.findAll('budget'),

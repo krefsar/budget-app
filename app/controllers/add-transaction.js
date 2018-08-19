@@ -1,13 +1,17 @@
 import Controller from '@ember/controller';
 import { computed } from '@ember/object';
 import { A } from '@ember/array';
+import ArrayProxy from '@ember/array/proxy';
 
 export default Controller.extend({
   init() {
     this._super(...arguments);
-    this.set('selectedExpenses', A());
+    this.set('selectedExpenses', ArrayProxy.create({
+      content: A()
+    }));
   },
 
+  queryParams: ['transactionType'],
   selectedBudgetId: null,
   transactionAmount: 0,
   transactionType: 'expense',
@@ -28,7 +32,7 @@ export default Controller.extend({
 
     const expenseAmount = selectedExpenseIds.reduce((count, expenseId) => {
       const matchingExpense = expenses.find(expense => {
-        return expense.get('id') === expenseId;
+        return +expense.get('id') === expenseId;
       });
 
       return count + matchingExpense.get('amount');
@@ -68,10 +72,10 @@ export default Controller.extend({
     toggleExpense(expenseId) {
       const selectedExpenses = this.get('selectedExpenses');
 
-      if (selectedExpenses.includes(expenseId)) {
-        selectedExpenses.removeObject(expenseId);
+      if (selectedExpenses.includes(+expenseId)) {
+        this.set('selectedExpenses', selectedExpenses.removeObject(+expenseId));
       } else {
-        selectedExpenses.addObject(expenseId);
+        this.set('selectedExpenses', selectedExpenses.addObject(+expenseId));
       }
     },
 
@@ -89,10 +93,10 @@ export default Controller.extend({
 
     submitIncome() {
       const matchingExpenses = this.get('expenses').filter(expense => {
-        return this.get('selectedExpenses').includes(expense.get('id'));
+        return this.get('selectedExpenses').includes(+expense.get('id'));
       });
 
-      const newTransaction = this.store.createRecord('transaction', {
+      this.store.createRecord('transaction', {
         memo: this.get('transactionMemo'),
         date: moment().toDate(),
         amount: this.get('transactionAmount'),
@@ -127,8 +131,10 @@ export default Controller.extend({
       this.setProperties({
         selectedBudgetId: firstBudget.get('id'),
         transactionAmount: 0,
-        transactionType: 'expense',
-        transactionMemo: ''
+        transactionMemo: '',
+        selectedExpenses: ArrayProxy.create({
+          content: A()
+        })
       });
     },
 
@@ -139,7 +145,9 @@ export default Controller.extend({
         const firstBudget = this.get('sortedBudgets').get('firstObject');
         this.set('selectedBudgetId', firstBudget.get('id'));
       } else {
-        this.set('selectedExpenses', A());
+        this.set('selectedExpenses', ArrayProxy.create({
+          content: A()
+        }));
       }
     }
   }

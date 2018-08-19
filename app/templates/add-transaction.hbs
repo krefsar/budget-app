@@ -47,7 +47,7 @@
       <div class='column'>
         {{#each sortedExpenses as |expense|}}
           <div class='row align-center'>
-            {{input type='checkbox' change=(action 'toggleExpense' expense.id) checked=(find-in selectedExpenses expense.id)}}
+            {{input type='checkbox' name=expense.id click=(action 'toggleExpense' expense.id) checked=(find-in selectedExpenses expense.id)}}
             <div class='column'>
               <span class='expense-info'>{{expense.name}}</span>
               <span class='expense-due'>{{to-dollars expense.amount}} - Due {{moment-format (now) 'M'}}/{{expense.dueDay}}</span>
