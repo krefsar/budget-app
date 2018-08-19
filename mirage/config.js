@@ -34,5 +34,7 @@ export default function() {
   this.get('/transactions');
   this.post('/transactions');
 
+  this.get('/expenses');
+
   this.passthrough();
 }

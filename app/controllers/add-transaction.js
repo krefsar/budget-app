@@ -1,19 +1,84 @@
 import Controller from '@ember/controller';
 import { computed } from '@ember/object';
+import { A } from '@ember/array';
 
 export default Controller.extend({
-  selectedBudgetName: null,
+  init() {
+    this._super(...arguments);
+    this.set('selectedExpenses', A());
+  },
+
+  selectedBudgetId: null,
   transactionAmount: 0,
-  transactionType: 'expense',
+  transactionType: 'income',
   transactionMemo: '',
 
-  budgets: computed.alias('model'),
+  budgets: computed.alias('model.budgets'),
   budgetSorting: ['name'],
   sortedBudgets: computed.sort('budgets', 'budgetSorting'),
 
+  expenses: computed.alias('model.expenses'),
+  expenseSorting: ['dueDay'],
+  sortedExpenses: computed.sort('expenses', 'expenseSorting'),
+
+  selectedExpenses: null,
+  expenseAmount: computed('selectedExpenses.[]', 'expenses', function() {
+    const expenses = this.get('expenses');
+    const selectedExpenseIds = this.get('selectedExpenses');
+
+    const expenseAmount = selectedExpenseIds.reduce((count, expenseId) => {
+      const matchingExpense = expenses.find(expense => {
+        return expense.get('id') === expenseId;
+      });
+
+      return count + matchingExpense.get('amount');
+    }, 0);
+
+    return expenseAmount;
+  }),
+
+  budgetAllocation: computed('budgets', 'transactionAmount', function() {
+    const budgets = this.get('budgets');
+    const transactionAmount = this.get('transactionAmount');
+
+    const budgetPercentage = budgets.reduce((count, budget) => {
+      return count + budget.get('percentage');
+    }, 0);
+
+    return transactionAmount * budgetPercentage;
+  }),
+
+  remainingIncome: computed('transactionAmount', 'expenseAmount', 'budgetAllocation', function() {
+    return this.get('transactionAmount') - this.get('expenseAmount') - this.get('budgetAllocation');
+  }),
+
+  currentBudget: computed('selectedBudgetId', 'budgets.[]', function() {
+    const matchingBudget = this.get('budgets').find(budget => {
+      console.log('comparing', typeof budget.get('id'), budget.get('id'), typeof this.get('selectedBudgetId'), this.get('selectedBudgetId'));
+      return budget.get('id') === this.get('selectedBudgetId');
+    });
+
+    console.log('matchingBudget', matchingBudget.get('name'));
+    return matchingBudget.get('remaining');
+  }),
+
+  remainingBudget: computed('currentBudget', 'transactionAmount', function() {
+    return this.get('currentBudget') - this.get('transactionAmount');
+  }),
+
   actions: {
-    selectBudget(name) {
-      this.set('selectedBudgetName', name);
+    toggleExpense(expenseId) {
+      const selectedExpenses = this.get('selectedExpenses');
+
+      if (selectedExpenses.includes(expenseId)) {
+        selectedExpenses.removeObject(expenseId);
+      } else {
+        selectedExpenses.addObject(expenseId);
+      }
+    },
+
+    selectBudget(id) {
+      this.set('selectedBudgetId', id);
     },
 
     submitTransaction() {
@@ -24,19 +89,18 @@ export default Controller.extend({
       };
 
       if (this.get('transactionType') === 'expense') {
-        newTransaction.budgetType = this.get('selectedBudgetName');
+        newTransaction.budgetType = this.get('selectedBudgetId');
         newTransaction.amount = -1 * newTransaction.amount;
       }
 
       this.store.createRecord('transaction', newTransaction).save().then(() => {
-        console.log('new transaction created')
         this.send('resetForm');
       });
     },
 
     resetForm() {
       this.setProperties({
-        selectedBudgetName: null,
+        selectedBudgetId: null,
         transactionAmount: 0,
         transactionType: 'expense',
         transactionMemo: ''
@@ -45,6 +109,13 @@ export default Controller.extend({
 
     transactionTypeChanged(type) {
       this.set('transactionType', type);
+
+      if (type === 'expense') {
+        const firstBudget = this.get('sortedBudgets').get('firstObject');
+        this.set('selectedBudgetId', firstBudget.get('id'));
+      } else {
+        this.set('selectedExpenses', A());
+      }
     }
   }
 });
