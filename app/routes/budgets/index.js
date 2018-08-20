@@ -11,7 +11,8 @@ export default Route.extend({
     }
 
     return this.store.findRecord('budget', selectedBudgetId, {
-      include: 'transactions'
+      include: 'transactions',
+      reload: true
     });
   }
 });

@@ -94,7 +94,7 @@ export default Controller.extend({
 
     submitIncome() {
       const matchingExpenses = this.expenses.filter(expense => {
-        return this.selectedExpenses.includes(+expense.get('id'));
+        return this.selectedExpenses.includes(expense.get('id'));
       });
 
       this.store.createRecord('transaction', {
