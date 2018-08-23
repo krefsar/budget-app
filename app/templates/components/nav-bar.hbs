@@ -1,11 +1,11 @@
-{{#link-to 'overview' class='flex nav-link'}}
-  {{nav-item icon='home' text='Overview'}}
-{{/link-to}}
-
-{{#link-to 'budgets' class='flex nav-link'}}
-  {{nav-item icon='usd' text='Budgets'}}
-{{/link-to}}
-
-{{#link-to 'add-transaction' class='flex nav-link'}}
-  {{nav-item icon='plus' text='Add Transaction'}}
-{{/link-to}}
+{{#paper-tabs center=center selected=@currentRouteName stretch=true as |tabs| }}
+  {{#tabs.tab value='overview' href='overview'}}
+    Overview
+  {{/tabs.tab}}
+  {{#tabs.tab value='budgets' href='budgets'}}
+    Budgets
+  {{/tabs.tab}}
+  {{#tabs.tab value='expenses' href='expenses'}}
+    Expenses
+  {{/tabs.tab}}
+{{/paper-tabs}}

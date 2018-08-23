@@ -7,10 +7,8 @@ const {
 } = DS;
 
 export default Model.extend({
-  percentage: attr('number'),
   name: attr('string'),
-  budget: attr('number'),
-  remaining: attr('number'),
+  balance: attr('number'),
   
   transactions: hasMany('transaction')
 });

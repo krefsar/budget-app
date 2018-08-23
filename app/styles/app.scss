@@ -1,10 +1,5 @@
-@import 'reset';
-@import 'flex';
-
-$budgetgreen: #64b64a;
-$budgetblack: #233d4d;
-$budgetred: #d81159;
-$budgetblue: #5bc0eb;
+@import 'ember-paper';
+@import 'ember-paper-link';
 
 html {
   font-size: 8px;
@@ -14,171 +9,16 @@ html {
   height: 100vh;
 }
 
-.app-header {
-  background-color: $budgetgreen;
-  border-bottom: 2px solid black;
-  color: white;
-  font-size: 2rem;
-  height: 5rem;
-  padding: 0 0.5rem;
+.nav-bar {
+  background-color: color($primary);
 }
 
-.nav {
-  background-color: white;
-  border-top: 2px solid black;
-  height: 5rem;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-}
-
-.nav-link {
-  display: inline-block;
-  text-decoration: none;
-  color: black;
+.paper-link {
+  color: contrastColor($primary, '200');
+  margin: 0;
+  padding: 1rem 0;
 
   &.active {
-    background-color: $budgetblue;
     color: white;
   }
-}
-.nav-item {
-  font-size: 1.5rem;
-  height: 100%;
-}
-
-.nav-icon {
-  margin: 0.5rem 0;
-}
-
-.overview-container {
-  background-color: $budgetblack;
-}
-
-.overview-chart {
-  margin: 1rem 0;
-}
-
-.overview-text {
-  margin: 1rem 0;
-  font-size: 2rem;
-}
-
-.budget-remaining {
-  background-color: $budgetblack;
-  color: white;
-  padding: 2rem 0;
-
-  h1 {
-    font-size: 8rem;
-  }
-  
-  p {
-    font-size: 2rem;
-  }
-}
-
-.header {
-  border-bottom: 2px solid black;
-  padding: 1rem;
-  font-size: 3rem;
-}
-
-.transaction-form {
-  font-size: 3rem;
-  margin: 1rem;
-
-  h1 {
-    font-size: 4rem;
-    text-decoration: underline;
-    margin-bottom: 1rem;
-  }
-
-  h2 {
-    font-size: 3rem;
-    margin: 1rem 0;
-  }
-
-  input {
-    margin: 0 1rem;
-  }
-}
-
-.expense-info {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin: 0.5rem 0.5rem;
-}
-
-.expense-due {
-  font-size: 2rem;
-}
-
-.text--positive {
-  color: $budgetgreen;
-}
-
-.text--negative {
-  color: $budgetred;
-}
-
-.text--inverted {
-  color: white;
-}
-
-.scroll {
-  overflow-y: scroll;
-}
-
-.transactiontable {
-  border-collapse: collapse;
-
-  tr {
-    border-bottom: 2px solid black;
-  }
-
-  td {
-    font-size: 2rem;
-    padding: 1rem;
-    vertical-align: middle;
-  }
-}
-
-.transactiontable-date {
-  width: 20%;
-}
-
-.transactiontable-amount {
-  width: 20%;
-}
-
-.page {
-  margin-bottom: 5rem;
-}
-
-.submit-button {
-  margin: 0 auto;
-  padding: 1rem;
-}
-
-.overview-container {
-  h1 {
-    font-size: 8rem;
-  }
-  p {
-    font-size: 2.5rem;
-  }
-}
-
-.expense {
-  margin: 0 1rem;
-}
-
-.loading-page {
-  background-color: $budgetblack;
-}
-
-.loading-spinner {
-  color: white;
-  font-size: 8rem;
 }

@@ -1,5 +1,6 @@
 import Component from '@ember/component';
 
 export default Component.extend({
-  classNames: ['nav', 'row']
+  classNames: ['nav'],
+  tagName: ''
 });

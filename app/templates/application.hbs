@@ -1,5 +1,5 @@
-<div class='app-container column'>
-  <header class='app-header row align-center'>
+<div class='app-container layout-column layout-align-start-stretch'>
+  <header class='app-header layout-row'>
     <h1 class='app-title'>Budget App</h1>
   </header>
 
@@ -7,5 +7,9 @@
     {{outlet}}
   </div>
 
-  {{nav-bar}}
+  <div class='layout-row layout-align-space-around-center nav-bar'>
+    {{paper-link 'Overview' 'overview' class='flex'}}
+    {{paper-link 'Budgets' 'budgets' class='flex'}}
+    {{paper-link 'Expenses' 'expenses' class='flex'}}
+  </div>
 </div>

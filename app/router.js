@@ -8,11 +8,10 @@ const Router = EmberRouter.extend({
 
 Router.map(function() {
   this.route('overview');
-  this.route('budgets', function() {
-    this.route('budget', { path: '/:budget_id' });
-  });
+  this.route('budgets');
   this.route('add-transaction');
   this.route('budget');
+  this.route('expenses');
 });
 
 export default Router;
