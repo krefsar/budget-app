@@ -1,0 +1,19 @@
+<div class='flex layout-column'>
+  {{#each sortedBudgets as |budget|}}
+    {{#link-to 'budgets.budget' budget.id}}
+      {{#paper-card as |card|}}
+        {{#card.title as |title|}}
+          {{#title.text as |text|}}
+            {{#text.headline}}
+              {{budget.name}}
+            {{/text.headline}}
+          {{/title.text}}
+        {{/card.title}}
+
+        {{#card.content class='layout-row layout-align-center-center'}}
+          <h1>{{to-dollars budget.balance}}</h1>
+        {{/card.content}}
+      {{/paper-card}}
+    {{/link-to}}
+  {{/each}}
+</div>

@@ -1,5 +1,9 @@
 @import 'ember-paper';
 @import 'ember-paper-link';
+@import 'paper-data-table';
+
+$budgetblack: #233d4d;
+$budgetgreen: #64b64a;
 
 html {
   font-size: 8px;
@@ -9,16 +13,52 @@ html {
   height: 100vh;
 }
 
+.page {
+  margin-bottom: 6rem;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 100%;
+}
+
 .nav-bar {
   background-color: color($primary);
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 6rem;
 }
 
 .paper-link {
   color: contrastColor($primary, '200');
   margin: 0;
   padding: 1rem 0;
+  height: 100%;
 
   &.active {
     color: white;
   }
+}
+
+.budget-balance {
+  background-color: $budgetblack;
+  font-size: 8rem;
+  padding: 4rem 0;
+}
+
+.number--negative {
+  color: color($warn);
+}
+
+.number--positive {
+  color: $budgetgreen;
+}
+
+.budget-fab {
+  position: absolute;
+  bottom: 8rem;
+  right: 2rem;
+}
+
+.transaction-input {
+  font-size: 2rem;
 }
