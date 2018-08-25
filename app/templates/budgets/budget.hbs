@@ -26,7 +26,7 @@
               <span>Edit</span>
             {{/content.menu-item}}
 
-            {{#content.menu-item onClick='deleteBudget'}}
+            {{#content.menu-item onClick='openDeleteDialog'}}
               <span>Delete</span>
             {{/content.menu-item}}
           {{/menu.content}}
@@ -79,6 +79,30 @@
     {{paper-icon 'add'}}
   {{/paper-button}}
 
+  {{#if deleteDialog}}
+    {{#paper-dialog onClose=(action 'closeDeleteDialog' 'cancel')}}
+      {{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+          <h3>Delete Budget</h3>
+        {{/paper-toolbar-tools}}
+      {{/paper-toolbar}}
+
+      {{#paper-dialog-content}}
+        <h2>Are you sure you want to delete your {{budget.name}} budget? This action cannot be undone.</h2>
+      {{/paper-dialog-content}}
+
+      {{#paper-dialog-actions class='layout-row layout-align-end-center'}}
+        {{#paper-button disabled=deletingBudget onClick=(action 'closeDeleteDialog' 'cancel')}}
+          Cancel
+        {{/paper-button}}
+
+        {{#paper-button disabled=deletingBudget onClick=(action 'closeDeleteDialog' 'ok')}}
+          {{if deletingBudget 'Deleting...' 'Delete'}}
+        {{/paper-button}}
+      {{/paper-dialog-actions}}
+    {{/paper-dialog}}
+  {{/if}}
+
   {{#if transactionDialog}}
     {{#paper-dialog fullscreen=true onClose=(action 'closeTransactionDialog' 'cancel')}}
       {{#paper-toolbar}}
@@ -108,7 +132,7 @@
       {{/paper-dialog-content}}
 
       {{#paper-dialog-actions class='layout-row layout-align-end-center'}}
-        {{#paper-button onClick=(action 'closeTransactionDialog' 'cancel')}}
+        {{#paper-button disabled=savingTransaction onClick=(action 'closeTransactionDialog' 'cancel')}}
           Cancel
         {{/paper-button}}
 

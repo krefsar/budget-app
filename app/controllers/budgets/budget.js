@@ -10,11 +10,34 @@ export default Controller.extend({
   transactionAmount: 0,
   transactionMemo: '',
 
+  deleteDialog: false,
+  deletingBudget: false,
+
   transactionSorting: ['date:desc'],
   sortedTransactions: computed.sort('transactions', 'transactionSorting'),
   savingTransaction: false,
 
   actions: {
+    openDeleteDialog() {
+      this.set('deleteDialog', true);
+    },
+
+    closeDeleteDialog(closeType) {
+      if (closeType === 'cancel') {
+        this.set('deleteDialog', false);
+      } else {
+        this.set('deletingBudget', true);
+
+        const budget = this.get('budget');
+        budget.destroyRecord()
+          .then(() => {
+            this.set('deleteDialog', false);
+            this.set('deletingBudget', false);
+            this.send('goBack');
+          });
+      }
+    },
+
     openTransactionDialog() {
       this.set('transactionDialog', true);
     },
@@ -53,14 +76,6 @@ export default Controller.extend({
     resetForm() {
       this.set('transactionAmount', 0);
       this.set('transactionMemo', '');
-    },
-
-    deleteBudget() {
-      const budget = this.get('budget');
-      budget.destroyRecord()
-        .then(() => {
-          this.send('goBack');
-        });
     },
 
     editBudget() {
