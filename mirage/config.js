@@ -9,6 +9,7 @@ export default function() {
   this.get('/budgets/:id');
   this.patch('/budgets/:id');
   this.delete('/budgets/:id');
+  this.post('/budgets');
 
   this.get('/transactions');
   this.post('/transactions');

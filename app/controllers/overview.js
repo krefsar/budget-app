@@ -3,11 +3,21 @@ import { computed } from '@ember/object';
 
 export default Controller.extend({
   user: computed.alias('model.user'),
-  budgets: computed.alias('model.budgets'),
+  unallocated: computed.alias('model.unallocated'),
 
-  budgetBalance: computed('budgets.@each.amount', function() {
-    return this.get('budgets').reduce((count, budget) => {
-      return count + budget.get('budget');
-    }, 0);
-  })
+  incomeDialog: false,
+  incomeAmount: 0,
+
+  actions: {
+    addIncome() {
+      this.set('incomeDialog', true);
+    },
+
+    closeIncomeDialog(closeType) {
+      if (closeType === 'cancel') {
+        this.set('incomeDialog', false);
+      } else {
+      }
+    }
+  }
 });

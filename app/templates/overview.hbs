@@ -1,4 +1,48 @@
-<div class='column flex overview-container align-center justify-center'>
-  <h1 class='{{if (lte user.balance 0) "text--negative" "text--positive"}}'>{{to-dollars user.balance}}</h1>
-  <p class='text--inverted'>remaining ({{to-dollars budgetBalance}} budgeted)</p>
+<div class='column overview-container align-center justify-center'>
+  <p class='text--inverted'>Unallocated</p>
+  <h1 class='budget-unallocated'>{{to-dollars unallocated.balance}}</h1>
 </div>
+
+{{#paper-button class='budget-fab' primary=true fab=true onClick=(action 'addIncome')}}
+  {{paper-icon 'add'}}
+{{/paper-button}}
+
+{{#if incomeDialog}}
+  {{#paper-dialog fullscreen=true onClose=(action 'closeTransactionDialog' 'cancel')}}
+    {{#paper-toolbar}}
+      {{#paper-toolbar-tools}}
+        <h3>Spend Money</h3>
+      {{/paper-toolbar-tools}}
+    {{/paper-toolbar}}
+
+    {{#paper-dialog-content}}
+      {{paper-input
+        block=true
+        class='transaction-input'
+        label='Amount'
+        value=transactionAmount
+        onChange=(action (mut transactionAmount))
+        required=true
+        type='number'
+      }}
+
+      {{paper-input
+        block=true
+        class='transaction-input'
+        label='Memo'
+        value=transactionMemo
+        onChange=(action (mut transactionMemo))
+      }}
+    {{/paper-dialog-content}}
+
+    {{#paper-dialog-actions class='layout-row layout-align-end-center'}}
+      {{#paper-button disabled=savingTransaction onClick=(action 'closeTransactionDialog' 'cancel')}}
+        Cancel
+      {{/paper-button}}
+
+      {{#paper-button disabled=(or (lte transactionAmount 0) savingTransaction) onClick=(action 'closeTransactionDialog' 'ok')}}
+        {{if savingTransaction 'Spending...' 'Spend'}}
+      {{/paper-button}}
+    {{/paper-dialog-actions}}
+  {{/paper-dialog}}
+{{/if}}

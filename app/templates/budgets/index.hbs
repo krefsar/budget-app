@@ -17,3 +17,39 @@
     {{/link-to}}
   {{/each}}
 </div>
+
+{{#paper-button class='budget-fab' primary=true fab=true onClick=(action 'openBudgetDialog')}}
+  {{paper-icon 'add'}}
+{{/paper-button}}
+
+{{#if newBudgetDialog}}
+  {{#paper-dialog onClose=(action 'closeBudgetDialog' 'cancel')}}
+    {{#paper-toolbar}}
+      {{#paper-toolbar-tools}}
+        <h3>Create Budget</h3>
+      {{/paper-toolbar-tools}}
+    {{/paper-toolbar}}
+
+    {{#paper-dialog-content}}
+      {{paper-input
+        block=true
+        class='transaction-input'
+        label='Name'
+        value=newBudgetName
+        onChange=(action (mut newBudgetName))
+        required=true
+        type='text'
+      }}
+    {{/paper-dialog-content}}
+
+    {{#paper-dialog-actions class='layout-row layout-align-end-center'}}
+      {{#paper-button disabled=savingBudget onClick=(action 'closeBudgetDialog' 'cancel')}}
+        Cancel
+      {{/paper-button}}
+
+      {{#paper-button disabled=(or (eq newBudgetName.length 0) savingBudget) onClick=(action 'closeBudgetDialog' 'ok')}}
+        {{if savingBudget 'Creating...' 'Create'}}
+      {{/paper-button}}
+    {{/paper-dialog-actions}}
+  {{/paper-dialog}}
+{{/if}}
