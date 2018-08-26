@@ -4,6 +4,7 @@ export default function() {
   this.timing = 400;
 
   this.get('/users/:id');
+  this.patch('/users/:id');
 
   this.get('/budgets');
   this.get('/budgets/:id');
@@ -15,6 +16,7 @@ export default function() {
   this.post('/transactions');
 
   this.get('/expenses');
+  this.post('/expenses');
 
   this.passthrough();
 }

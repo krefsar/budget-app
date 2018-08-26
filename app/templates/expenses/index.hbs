@@ -24,7 +24,7 @@
           <p class='expense-remaining'>{{to-dollars expense.remainingDue}} remaining</p>
 
           <div class='layout-row layout-align-start-center expense-percentage'>
-            {{paper-progress-linear class='expense-percentage-graph' value=expense.percentagePaid}}
+            {{paper-progress-linear accent=true class='expense-percentage-graph' value=expense.percentagePaid}}
             <span class='expense-percentage-text'>{{expense.percentagePaid}}%</span>
           </div>
         {{/card.content}}
@@ -32,3 +32,62 @@
     {{/link-to}}
   {{/each}}
 </div>
+
+{{#paper-button class='fab--primary' primary=true fab=true onClick=(action 'openExpenseDialog')}}
+  {{paper-icon 'add'}}
+{{/paper-button}}
+
+{{#if newExpenseDialog}}
+  {{#paper-dialog onClose=(action 'closeExpenseDialog' 'cancel')}}
+    {{#paper-toolbar}}
+      {{#paper-toolbar-tools}}
+        <h3>Create Expense</h3>
+      {{/paper-toolbar-tools}}
+    {{/paper-toolbar}}
+
+    {{#paper-dialog-content}}
+      {{paper-input
+        block=true
+        class='transaction-input'
+        label='Name'
+        value=newExpenseName
+        disabled=savingExpense
+        onChange=(action (mut newExpenseName))
+        required=true
+        type='text'
+      }}
+
+      {{paper-input
+        block=true
+        class='transaction-input'
+        disabled=savingExpense
+        label='Amount Due'
+        value=newExpenseAmount
+        onChange=(action (mut newExpenseAmount))
+        required=true
+        type='number'
+      }}
+
+      {{paper-input
+        block=true
+        class='transaction-input'
+        label='Due Date each Month'
+        disabled=savingExpense
+        value=newExpenseDay
+        onChange=(action (mut newExpenseDay))
+        required=true
+        type='number'
+      }}
+    {{/paper-dialog-content}}
+
+    {{#paper-dialog-actions class='layout-row layout-align-end-center'}}
+      {{#paper-button disabled=savingExpense onClick=(action 'closeExpenseDialog' 'cancel')}}
+        Cancel
+      {{/paper-button}}
+
+      {{#paper-button disabled=saveExpenseDisabled onClick=(action 'closeExpenseDialog' 'ok')}}
+        {{if savingExpense 'Creating...' 'Create'}}
+      {{/paper-button}}
+    {{/paper-dialog-actions}}
+  {{/paper-dialog}}
+{{/if}}

@@ -2,7 +2,8 @@ import Controller from '@ember/controller';
 import { computed } from '@ember/object';
 
 export default Controller.extend({
-  budgets: computed.alias('model'),
+  user: computed.alias('model.user'),
+  budgets: computed.alias('model.budgets'),
   budgetSorting: ['name:asc'],
   sortedBudgets: computed.sort('budgets', 'budgetSorting'),
 
@@ -27,6 +28,11 @@ export default Controller.extend({
         });
 
         newBudget.save()
+          .then(budget => {
+            const user = this.get('user');
+            user.get('budgets').pushObject(budget);
+            return user.save();
+          })
           .then(() => {
             this.set('savingBudget', false);
             this.set('newBudgetDialog', false);
