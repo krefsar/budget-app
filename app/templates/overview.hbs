@@ -96,11 +96,12 @@
       {{#paper-select
         disabled=savingTransfer
         label="Budget"
+        class='transfer-select'
         options=budgets
         selected=selectedBudget
         onChange=(action (mut selectedBudget))
         as |budget|}}
-          {{budget.name}}
+          <span class='select-option'>{{budget.name}}</span>
       {{/paper-select}}   
     {{/paper-dialog-content}}
 

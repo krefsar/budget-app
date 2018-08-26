@@ -8,7 +8,7 @@ export default Route.extend({
 
     return RSVP.hash({
       user,
-      unallocated: this.store.findRecord('budget', 0, { include: 'transactions' }),
+      unallocated: user.get('unallocated'),
       budgets: user.get('budgets'),
     });
   }
