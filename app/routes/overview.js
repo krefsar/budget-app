@@ -3,9 +3,12 @@ import RSVP from 'rsvp';
 
 export default Route.extend({
   model() {
+    const user = this.modelFor('application');
+
     return RSVP.hash({
-      user: this.modelFor('application'),
-      unallocated: this.store.findRecord('budget', 0, { include: 'transactions' })
+      user,
+      unallocated: this.store.findRecord('budget', 0, { include: 'transactions' }),
+      budgets: user.get('budgets'),
     });
   }
 });

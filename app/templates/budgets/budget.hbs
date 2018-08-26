@@ -75,7 +75,7 @@
     {{/table.body}}
   {{/paper-data-table}}
 
-  {{#paper-button class='budget-fab' primary=true onClick=(action 'openTransactionDialog') raised=true fab=true}}
+  {{#paper-button class='fab--primary' primary=true onClick=(action 'openTransactionDialog') raised=true fab=true}}
     {{paper-icon 'add'}}
   {{/paper-button}}
 
@@ -116,6 +116,7 @@
           block=true
           class='transaction-input'
           label='Amount'
+          disabled=savingTransaction
           value=transactionAmount
           onChange=(action (mut transactionAmount))
           required=true
@@ -124,6 +125,7 @@
 
         {{paper-input
           block=true
+          disabled=savingTransaction
           class='transaction-input'
           label='Memo'
           value=transactionMemo

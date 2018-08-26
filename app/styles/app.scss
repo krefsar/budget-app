@@ -57,9 +57,15 @@ a {
   color: $budgetgreen;
 }
 
-.budget-fab {
+.fab--primary {
   position: absolute;
   bottom: 8rem;
+  right: 2rem;
+}
+
+.fab--secondary {
+  position: absolute;
+  bottom: 16rem;
   right: 2rem;
 }
 
