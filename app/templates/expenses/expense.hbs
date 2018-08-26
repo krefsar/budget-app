@@ -58,8 +58,8 @@
     <h2>Due {{moment-format selectedExpenseMonth 'M'}}/{{expense.dueDay}}/{{moment-format selectedExpenseMonth 'YY'}}</h2>
 
     <div class='layout-row layout-align-start-center expense-percentage'>
-      {{paper-progress-linear warn=true class='expense-percentage-graph' value=expense.percentagePaid}}
-      <span class='expense-percentage-text'>{{expense.percentagePaid}}%</span>
+      {{paper-progress-linear primary=(gte amountPaid expense.amount) warn=(lt amountPaid expense.amount) class='expense-percentage-graph' value=expense.percentagePaid}}
+      <span class='expense-percentage-text'>{{to-fixed expense.percentagePaid 0}}%</span>
     </div>
   </div>
 
@@ -106,6 +106,48 @@
 
         {{#paper-button disabled=deletingExpense onClick=(action 'closeDeleteDialog' 'ok')}}
           {{if deletingExpense 'Deleting...' 'Delete'}}
+        {{/paper-button}}
+      {{/paper-dialog-actions}}
+    {{/paper-dialog}}
+  {{/if}}
+
+  {{#if transactionDialog}}
+    {{#paper-dialog fullscreen=true onClose=(action 'closeTransactionDialog' 'cancel')}}
+      {{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+          <h3>Pay Expense</h3>
+        {{/paper-toolbar-tools}}
+      {{/paper-toolbar}}
+
+      {{#paper-dialog-content}}
+        {{paper-input
+          block=true
+          class='transaction-input'
+          label='Amount'
+          disabled=savingTransaction
+          value=transactionAmount
+          onChange=(action (mut transactionAmount))
+          required=true
+          type='number'
+        }}
+
+        {{paper-input
+          block=true
+          disabled=savingTransaction
+          class='transaction-input'
+          label='Memo'
+          value=transactionMemo
+          onChange=(action (mut transactionMemo))
+        }}
+      {{/paper-dialog-content}}
+
+      {{#paper-dialog-actions class='layout-row layout-align-end-center'}}
+        {{#paper-button disabled=savingTransaction onClick=(action 'closeTransactionDialog' 'cancel')}}
+          Cancel
+        {{/paper-button}}
+
+        {{#paper-button disabled=(or (lte transactionAmount 0) savingTransaction) onClick=(action 'closeTransactionDialog' 'ok')}}
+          {{if savingTransaction 'Paying...' 'Pay'}}
         {{/paper-button}}
       {{/paper-dialog-actions}}
     {{/paper-dialog}}
