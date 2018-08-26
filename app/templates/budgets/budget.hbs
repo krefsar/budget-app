@@ -43,6 +43,7 @@
       <div class='layout-row layout-align-center-center'>
         {{paper-input
           block=true
+          disabled=savingEdit
           value=budget.name
           onChange=(action (mut budget.name))
           required=true

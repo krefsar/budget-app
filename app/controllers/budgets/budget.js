@@ -17,6 +17,8 @@ export default Controller.extend({
   sortedTransactions: computed.sort('transactions', 'transactionSorting'),
   savingTransaction: false,
 
+  savingEdit: false,
+
   actions: {
     openDeleteDialog() {
       this.set('deleteDialog', true);
@@ -83,7 +85,9 @@ export default Controller.extend({
     },
 
     finishEditing() {
+      this.set('savingEdit', true);
       this.get('budget').save().then(() => {
+        this.set('savingEdit', false);
         this.set('editing', false);
       });
     }
