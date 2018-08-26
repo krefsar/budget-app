@@ -3,14 +3,18 @@ import { computed } from '@ember/object';
 
 export default Controller.extend({
   queryParams: ['selectedMonth'],
-  selectedMonth: moment().startOf('month'),
+  selectedMonth: moment().startOf('month').valueOf(),
 
   user: computed.alias('model.user'),
 
   expenses: computed('selectedMonth', 'model.expenses.@each.{amount,transactions,dueDay}', function() {
     return this.get('model.expenses').map(expense => {
       const relevantTransactions = expense.get('transactions').filter(transaction => {
-        return moment(transaction.get('date')).isSameOrAfter(moment(this.get('selectedMonth')));
+        const transactionDate = moment(transaction.get('date'));
+        const selectedMonth = moment(this.get('selectedMonth'));
+        const nextMonth = moment(this.get('selectedMonth')).add(1, 'months');
+
+        return transactionDate.isSameOrAfter(selectedMonth) && transactionDate.isBefore(nextMonth);
       });
 
       const amountPaid = relevantTransactions.reduce((count, transaction) => {
@@ -73,6 +77,18 @@ export default Controller.extend({
       this.set('newExpenseName', '');
       this.set('newExpenseAmount', 0);
       this.set('newExpenseDay', null);
+    },
+
+    prevMonth() {
+      const newMonth = moment(this.get('selectedMonth')).subtract(1, 'months');
+      console.log(newMonth.toDate());
+      this.set('selectedMonth', newMonth);
+    },
+    
+    nextMonth() {
+      const newMonth = moment(this.get('selectedMonth')).add(1, 'months');
+      console.log(newMonth.toDate());
+      this.set('selectedMonth', newMonth);
     }
   }
 });

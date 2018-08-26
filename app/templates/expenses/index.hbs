@@ -1,6 +1,18 @@
 {{#paper-toolbar}}
   {{#paper-toolbar-tools}}
     <h2>All Expenses</h2>
+    <span class='flex'></span>
+
+    {{#paper-button iconButton=true onClick=(action 'prevMonth')}}
+      {{paper-icon 'keyboard-arrow-left'}}
+    {{/paper-button}}
+
+    {{log selectedMonth}}
+    {{moment-format selectedMonth 'MMM YY'}}
+
+    {{#paper-button iconButton=true onClick=(action 'nextMonth')}}
+      {{paper-icon 'keyboard-arrow-right'}}
+    {{/paper-button}}
   {{/paper-toolbar-tools}}
 {{/paper-toolbar}}
 

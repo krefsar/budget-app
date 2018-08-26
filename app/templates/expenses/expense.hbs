@@ -53,13 +53,13 @@
   {{/paper-toolbar}}
 
   <div class='expense-balance layout-column {{if (lte expense.remainingDue 0) "number--positive" "number--negative"}}'>
-    <h1>{{to-dollars expense.remainingDue}}</h1>
+    <h1>{{to-dollars remainingDue}}</h1>
 
     <h2>Due {{moment-format selectedExpenseMonth 'M'}}/{{expense.dueDay}}/{{moment-format selectedExpenseMonth 'YY'}}</h2>
 
     <div class='layout-row layout-align-start-center expense-percentage'>
-      {{paper-progress-linear primary=(gte amountPaid expense.amount) warn=(lt amountPaid expense.amount) class='expense-percentage-graph' value=expense.percentagePaid}}
-      <span class='expense-percentage-text'>{{to-fixed expense.percentagePaid 0}}%</span>
+      {{paper-progress-linear primary=(gte amountPaid expense.amount) warn=(lt amountPaid expense.amount) class='expense-percentage-graph' value=percentagePaid}}
+      <span class='expense-percentage-text'>{{to-fixed percentagePaid 0}}%</span>
     </div>
   </div>
 
@@ -120,16 +120,22 @@
       {{/paper-toolbar}}
 
       {{#paper-dialog-content}}
-        {{paper-input
-          block=true
-          class='transaction-input'
-          label='Amount'
-          disabled=savingTransaction
-          value=transactionAmount
-          onChange=(action (mut transactionAmount))
-          required=true
-          type='number'
-        }}
+        <div class='layout-row layout-align-start-start'>
+          {{paper-input
+            block=true
+            class='transaction-input'
+            label='Amount'
+            max=remainingDue
+            disabled=savingTransaction
+            value=transactionAmount
+            onChange=(action (mut transactionAmount))
+            required=true
+            type='number'
+          }}
+          {{#paper-button raised=true accent=true onClick=(action 'payRemaining')}}
+            Remaining
+          {{/paper-button}}
+        </div>
 
         {{paper-input
           block=true

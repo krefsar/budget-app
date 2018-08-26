@@ -4,7 +4,7 @@ import RSVP from 'rsvp';
 
 export default Controller.extend({
   queryParams: ['selectedExpenseMonth'],
-  selectedExpenseMonth: moment().startOf('month'),
+  selectedExpenseMonth: moment().startOf('month').valueOf(),
   expense: computed.alias('model'),
   editing: false,
   unallocated: computed.alias('model.unallocated'),
@@ -12,28 +12,35 @@ export default Controller.extend({
   deleteDialog: false,
   savingEdit: false,
 
-  amountPaid: computed('model.expense.transactions.[]', 'selectedExpenseMonth', function() {
-    const transactions = this.get('model.expense.transactions');
-    const relevantTransactions = transactions.filter(transaction => {
-      return moment(transaction.get('date')).isSameOrAfter(moment(this.get('selectedExpenseMonth')));
-    });
+  expense: computed.alias('model.expense'),
 
-    return relevantTransactions.reduce((count, transaction) => {
+  amountPaid: computed('transactions', function() {
+    const transactions = this.get('transactions');
+    return transactions.reduce((count, transaction) => {
       return count + transaction.get('amount');
     }, 0);
   }),
 
-  expense: computed('model.expense.{amount,dueDay}', 'selectedExpenseMonth', 'amountPaid', function() {
-    const expense = this.get('model.expense');
-    const amountPaid = this.get('amountPaid');
-
-    const remainingDue = expense.get('amount') - amountPaid;
-    expense.set('remainingDue', remainingDue);
-    expense.set('percentagePaid', (amountPaid/expense.get('amount')) * 100);
-    return expense;
+  percentagePaid: computed('expense.amount', 'amountPaid', function() {
+    return (this.get('amountPaid') / this.get('expense.amount')) * 100;
   }),
 
-  transactions: computed.alias('expense.transactions'),
+  remainingDue: computed('expense.amount', 'amountPaid', function() {
+    return this.get('expense.amount') - this.get('amountPaid');
+  }),
+
+  transactions: computed('expense.transactions.[]', 'selectedExpenseMonth', function() {
+    const transactions = this.get('expense.transactions');
+
+    return transactions.filter(transaction => {
+      const transactionDate = moment(transaction.get('date'));
+      const selectedMonth = moment(this.get('selectedExpenseMonth'));
+      const nextMonth = moment(this.get('selectedExpenseMonth')).add(1, 'months');
+
+      return transactionDate.isSameOrAfter(selectedMonth) && transactionDate.isBefore(nextMonth);
+    });
+  }),
+
   transactionSorting: ['date:desc'],
   sortedTransactions: computed.sort('transactions', 'transactionSorting'),
 
@@ -106,6 +113,10 @@ export default Controller.extend({
             this.send('resetForm');
           });
       }
+    },
+    
+    payRemaining() {
+      this.set('transactionAmount', this.get('remainingDue'));
     },
 
     closeDeleteDialog(closeType) {
