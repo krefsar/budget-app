@@ -13,11 +13,20 @@
             {{#text.headline}}
               {{expense.name}}
             {{/text.headline}}
+
+            {{#text.subhead}}
+              Due {{moment-format selectedMonth 'M'}}/{{expense.dueDay}}/{{moment-format selectedMonth 'YY'}}
+            {{/text.subhead}}
           {{/title.text}}
         {{/card.title}}
 
-        {{#card.content class='layout-row layout-align-center-center'}}
-          <h1>{{to-dollars expense.amount}}</h1>
+        {{#card.content}}
+          <p class='expense-remaining'>{{to-dollars expense.remainingDue}} remaining</p>
+
+          <div class='layout-row layout-align-start-center expense-percentage'>
+            {{paper-progress-linear class='expense-percentage-graph' value=expense.percentagePaid}}
+            <span class='expense-percentage-text'>{{expense.percentagePaid}}%</span>
+          </div>
         {{/card.content}}
       {{/paper-card}}
     {{/link-to}}

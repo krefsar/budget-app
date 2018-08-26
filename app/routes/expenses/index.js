@@ -3,6 +3,6 @@ import Route from '@ember/routing/route';
 export default Route.extend({
   model() {
     const user = this.modelFor('application');
-    return user.get('expenses');
+    return user.get('expenses', { include: 'transactions' });
   }
 });
