@@ -1,0 +1,25 @@
+{{#paper-toolbar}}
+  {{#paper-toolbar-tools}}
+    <h2>All Expenses</h2>
+  {{/paper-toolbar-tools}}
+{{/paper-toolbar}}
+
+<div class='flex page page--dark layout-column'>
+  {{#each sortedExpenses as |expense|}}
+    {{#link-to 'expenses.expense' expense.id}}
+      {{#paper-card as |card|}}
+        {{#card.title as |title|}}
+          {{#title.text as |text|}}
+            {{#text.headline}}
+              {{expense.name}}
+            {{/text.headline}}
+          {{/title.text}}
+        {{/card.title}}
+
+        {{#card.content class='layout-row layout-align-center-center'}}
+          <h1>{{to-dollars expense.amount}}</h1>
+        {{/card.content}}
+      {{/paper-card}}
+    {{/link-to}}
+  {{/each}}
+</div>

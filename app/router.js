@@ -13,7 +13,9 @@ Router.map(function() {
   });
   this.route('add-transaction');
   this.route('budget');
-  this.route('expenses');
+  this.route('expenses', function() {
+    this.route('expense', { path: ':expense_id' });
+  });
 });
 
 export default Router;
