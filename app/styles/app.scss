@@ -4,6 +4,8 @@
 
 $budgetblack: #233d4d;
 $budgetgreen: #64b64a;
+$budgetred: #d81159;
+$budgetblue: #5bc0eb;
 
 html {
   font-size: 8px;
@@ -86,4 +88,8 @@ a {
 
 .budget-unallocated {
   font-size: 8rem;
+}
+
+.page--dark {
+  background-color: $budgetblue;
 }
