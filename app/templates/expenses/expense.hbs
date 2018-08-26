@@ -52,13 +52,13 @@
     {{/if}}
   {{/paper-toolbar}}
 
-  <div class='expense-balance layout-column layout-align-center-center {{if (lte expense.remainingDue 0) "number--positive" "number--negative"}}'>
+  <div class='expense-balance layout-column {{if (lte expense.remainingDue 0) "number--positive" "number--negative"}}'>
     <h1>{{to-dollars expense.remainingDue}}</h1>
 
     <h2>Due {{moment-format selectedExpenseMonth 'M'}}/{{expense.dueDay}}/{{moment-format selectedExpenseMonth 'YY'}}</h2>
 
     <div class='layout-row layout-align-start-center expense-percentage'>
-      {{paper-progress-linear accent=true class='expense-percentage-graph' value=expense.percentagePaid}}
+      {{paper-progress-linear warn=true class='expense-percentage-graph' value=expense.percentagePaid}}
       <span class='expense-percentage-text'>{{expense.percentagePaid}}%</span>
     </div>
   </div>
