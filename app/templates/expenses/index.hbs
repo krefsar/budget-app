@@ -24,8 +24,8 @@
           <p class='expense-remaining'>{{to-dollars expense.remainingDue}} remaining</p>
 
           <div class='layout-row layout-align-start-center expense-percentage'>
-            {{paper-progress-linear accent=true class='expense-percentage-graph' value=expense.percentagePaid}}
-            <span class='expense-percentage-text'>{{expense.percentagePaid}}%</span>
+            {{paper-progress-linear primary=(gte expense.percentagePaid 100) accent=(lt expense.percentagePaid 100) class='expense-percentage-graph' value=expense.percentagePaid}}
+            <span class='expense-percentage-text'>{{to-fixed expense.percentagePaid 0}}%</span>
           </div>
         {{/card.content}}
       {{/paper-card}}
