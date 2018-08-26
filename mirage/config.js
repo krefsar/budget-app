@@ -16,6 +16,9 @@ export default function() {
   this.post('/transactions');
 
   this.get('/expenses');
+  this.get('/expenses/:id');
+  this.patch('/expenses/:id');
+  this.delete('/expenses/:id');
   this.post('/expenses');
 
   this.passthrough();

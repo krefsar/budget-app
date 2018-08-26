@@ -1,1 +1,54 @@
-{{outlet}}
+<div class='flex'>
+  {{#paper-toolbar tall=editing accent=editing}}
+    {{#paper-toolbar-tools}}
+      {{#unless editing}}
+        {{#paper-button iconButton=true onClick=(route-action 'goBack')}}
+          {{paper-icon 'close'}}
+        {{/paper-button}}
+
+        <h2>
+          {{expense.name}}
+        </h2>
+      {{/unless}}
+
+      <span class='flex'></span>
+
+      {{#unless editing}}
+        {{#paper-menu as |menu|}}
+          {{#menu.trigger}}
+            {{#paper-button iconButton=true}}
+              {{paper-icon 'more-vert'}}
+            {{/paper-button}}
+          {{/menu.trigger}}
+
+          {{#menu.content width=2 as |content|}}
+            {{#content.menu-item onClick='editExpense'}}
+              <span>Edit</span>
+            {{/content.menu-item}}
+
+            {{#content.menu-item onClick='openDeleteDialog'}}
+              <span>Delete</span>
+            {{/content.menu-item}}
+          {{/menu.content}}
+        {{/paper-menu}}
+
+      {{else}}
+        {{#paper-button onClick='finishEditing'}}
+          <span>Done</span>
+        {{/paper-button}}
+      {{/unless}}
+    {{/paper-toolbar-tools}}
+
+    {{#if editing}}
+      <div class='layout-row layout-align-center-center'>
+        {{paper-input
+          block=true
+          disabled=savingEdit
+          value=expense.name
+          onChange=(action (mut expense.name))
+          required=true
+        }}
+      </div>
+    {{/if}}
+  {{/paper-toolbar}}
+</div>
