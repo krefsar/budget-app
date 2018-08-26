@@ -5,7 +5,7 @@ export default Route.extend({
   model() {
     return RSVP.hash({
       user: this.modelFor('application'),
-      unallocated: this.store.findRecord('budget', 0)
+      unallocated: this.store.findRecord('budget', 0, { include: 'transactions' })
     });
   }
 });

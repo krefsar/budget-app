@@ -3,15 +3,35 @@
   <h1 class='budget-unallocated'>{{to-dollars unallocated.balance}}</h1>
 </div>
 
+{{#paper-data-table as |table|}}
+  {{#table.body as |body|}}
+    {{#each sortedTransactions as |transaction|}}
+      {{#body.row as |row|}}
+        {{#row.cell}}
+          {{moment-format transaction.date 'M/D/YY'}}
+        {{/row.cell}}
+
+        {{#row.cell}}
+          {{transaction.memo}}
+        {{/row.cell}}
+
+        {{#row.cell numeric=true}}
+          <span class={{if (lte transaction.amount 0) "number--negative" "number--positive"}}>{{to-dollars transaction.amount}}</span>
+        {{/row.cell}}
+      {{/body.row}}
+    {{/each}}
+  {{/table.body}}
+{{/paper-data-table}}
+
 {{#paper-button class='budget-fab' primary=true fab=true onClick=(action 'addIncome')}}
   {{paper-icon 'add'}}
 {{/paper-button}}
 
 {{#if incomeDialog}}
-  {{#paper-dialog fullscreen=true onClose=(action 'closeTransactionDialog' 'cancel')}}
+  {{#paper-dialog fullscreen=true onClose=(action 'closeIncomeDialog' 'cancel')}}
     {{#paper-toolbar}}
       {{#paper-toolbar-tools}}
-        <h3>Spend Money</h3>
+        <h3>Add Income</h3>
       {{/paper-toolbar-tools}}
     {{/paper-toolbar}}
 
@@ -20,8 +40,8 @@
         block=true
         class='transaction-input'
         label='Amount'
-        value=transactionAmount
-        onChange=(action (mut transactionAmount))
+        value=incomeAmount
+        onChange=(action (mut incomeAmount))
         required=true
         type='number'
       }}
@@ -30,18 +50,18 @@
         block=true
         class='transaction-input'
         label='Memo'
-        value=transactionMemo
-        onChange=(action (mut transactionMemo))
+        value=incomeMemo
+        onChange=(action (mut incomeMemo))
       }}
     {{/paper-dialog-content}}
 
     {{#paper-dialog-actions class='layout-row layout-align-end-center'}}
-      {{#paper-button disabled=savingTransaction onClick=(action 'closeTransactionDialog' 'cancel')}}
+      {{#paper-button disabled=savingIncome onClick=(action 'closeIncomeDialog' 'cancel')}}
         Cancel
       {{/paper-button}}
 
-      {{#paper-button disabled=(or (lte transactionAmount 0) savingTransaction) onClick=(action 'closeTransactionDialog' 'ok')}}
-        {{if savingTransaction 'Spending...' 'Spend'}}
+      {{#paper-button disabled=(or (lte incomeAmount 0) savingIncome) onClick=(action 'closeIncomeDialog' 'ok')}}
+        {{if savingIncome 'Adding...' 'Add'}}
       {{/paper-button}}
     {{/paper-dialog-actions}}
   {{/paper-dialog}}
