@@ -1,4 +1,10 @@
-<div class='flex layout-column'>
+{{#paper-toolbar}}
+  {{#paper-toolbar-tools}}
+    <h2>All Budgets</h2>
+  {{/paper-toolbar-tools}}
+{{/paper-toolbar}}
+
+<div class='flex page layout-column'>
   {{#each sortedBudgets as |budget|}}
     {{#link-to 'budgets.budget' budget.id}}
       {{#paper-card as |card|}}
