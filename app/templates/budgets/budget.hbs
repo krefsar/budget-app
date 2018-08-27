@@ -59,6 +59,10 @@
     {{paper-icon 'add'}}
   {{/paper-button}}
 
+  {{#paper-button class='fab--secondary' accent=true fab=true onClick=(action 'transferFunds')}}
+    {{paper-icon 'compare-arrows'}}
+  {{/paper-button}}
+
   {{#if deleteDialog}}
     {{#paper-dialog onClose=(action 'closeDeleteDialog' 'cancel')}}
       {{#paper-toolbar}}
@@ -149,6 +153,69 @@
       {{#paper-dialog-actions class='layout-row layout-align-end-center'}}
         {{#paper-button disabled=saveEditDisabled onClick=(action 'finishEditing')}}
           {{if savingEdit 'Updating...' 'Update'}}
+        {{/paper-button}}
+      {{/paper-dialog-actions}}
+    {{/paper-dialog}}
+  {{/if}}
+
+  {{#if transferDialog}}
+    {{#paper-dialog fullscreen=true onClose=(action 'closeTransferDialog' 'cancel')}}
+      {{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+          <h3>Transfer Funds</h3>
+        {{/paper-toolbar-tools}}
+      {{/paper-toolbar}}
+
+      {{#paper-dialog-content}}
+        {{paper-input
+          block=true
+          class='transaction-input'
+          disabled=savingTransfer
+          label='Amount'
+          value=transferAmount
+          onChange=(action (mut transferAmount))
+          required=true
+          type='number'
+        }}
+
+        <h1>From</h1>
+        {{#paper-select
+          disabled=savingTransfer
+          label="Budget"
+          class='transfer-select'
+          options=allBudgetsSorted
+          selected=transferFromBudget
+          onChange=(action (mut transferFromBudget))
+          as |fromBudget|}}
+            <span class='select-option'>{{fromBudget.name}}</span>
+        {{/paper-select}}   
+
+        <div>
+          {{#paper-button iconButton=true onClick=(action 'switchTransferBudgets')}}
+            {{paper-icon 'swap-vert'}}
+          {{/paper-button}}
+        </div>
+
+        <h1>To</h1>
+        {{#paper-select
+          disabled=savingTransfer
+          label="Budget"
+          class='transfer-select'
+          options=allBudgetsSorted
+          selected=transferToBudget
+          onChange=(action (mut transferToBudget))
+          as |toBudget|}}
+            <span class='select-option'>{{toBudget.name}}</span>
+        {{/paper-select}}   
+      {{/paper-dialog-content}}
+
+      {{#paper-dialog-actions class='layout-row layout-align-end-center'}}
+        {{#paper-button disabled=savingTransfer onClick=(action 'closeTransferDialog' 'cancel')}}
+          Cancel
+        {{/paper-button}}
+
+        {{#paper-button disabled=(or (or (lte transferAmount 0) savingTransfer) (eq selectedBudget null)) onClick=(action 'closeTransferDialog' 'ok')}}
+          {{if savingTransfer 'Transferring...' 'Transfer'}}
         {{/paper-button}}
       {{/paper-dialog-actions}}
     {{/paper-dialog}}

@@ -1,15 +1,30 @@
 import Controller from '@ember/controller';
 import { computed } from '@ember/object';
+import RSVP from 'rsvp';
 
 export default Controller.extend({
   transactionDialog: false,
-  budget: computed.alias('model'),
-  transactions: computed.alias('model.transactions'),
+  budget: computed.alias('model.budget'),
+  budgets: computed.alias('model.budgets'),
+  transactions: computed.alias('budget.transactions'),
   transactionAmount: 0,
   transactionMemo: '',
+  unallocated: computed.alias('model.unallocated'),
+  unallocatedArray: computed('unallocated', function() {
+    return [this.get('unallocated')];
+  }),
+  allBudgets: computed.union('budgets', 'unallocatedArray'),
+  allBudgetsSorted: computed.sort('allBudgets', 'budgetsSorting'),
+  budgetsSorting: ['name:asc'],
+
+  savingTransfer: false,
+  transferDialog: false,
 
   deleteDialog: false,
   deletingBudget: false,
+  transferAmount: 0,
+  transferFromBudget: null,
+  transferToBudget: null,
 
   transactionSorting: ['date:desc'],
   sortedTransactions: computed.sort('transactions', 'transactionSorting'),
@@ -79,6 +94,64 @@ export default Controller.extend({
       this.set('transactionMemo', '');
     },
 
+    closeTransferDialog(closeType) {
+      if (closeType === 'cancel') {
+        this.set('transferDialog', false);
+        this.send('resetTransferForm');
+      } else {
+        this.set('savingTransfer', true);
+        const fromBudget = this.get('transferFromBudget');
+        const toBudget = this.get('transferToBudget');
+
+        const additionTx = this.store.createRecord('transaction', {
+          amount: this.get('transferAmount'),
+          memo: `Transfer from ${fromBudget.get('name')}`,
+          date: moment().toDate()
+        });
+
+        const removalTx = this.store.createRecord('transaction', {
+          amount: this.get('transferAmount') * -1,
+          memo: `Transfer to ${toBudget.get('name')}`,
+          date: moment().toDate()
+        });
+
+        return RSVP.hash({
+          additionTx: additionTx.save(),
+          removalTx: removalTx.save()
+        })
+          .then(({ additionTx, removalTx }) => {
+            const prevFromBalance = fromBudget.get('balance');
+            fromBudget.set('balance', prevFromBalance + removalTx.get('amount'));
+            fromBudget.get('transactions').pushObject(removalTx);
+
+            const prevToBalance = toBudget.get('balance');
+            toBudget.set('balance', prevToBalance + additionTx.get('amount'));
+            toBudget.get('transactions').pushObject(additionTx);
+
+            return RSVP.hash({
+              fromBudget: fromBudget.save(),
+              toBudget: toBudget.save()
+            })
+              .then(() => {
+                this.set('transferDialog', false);
+                this.set('savingTransfer', false);
+                this.send('resetTransferForm');
+              });
+        });
+      }
+    },
+
+    resetTransferForm() {
+      this.set('transferAmount', 0);
+      this.set('transferFromBudget', null);
+      this.set('transferToBudget', null);
+    },
+
+    transferFunds() {
+      this.set('transferToBudget', this.get('budget'));
+      this.set('transferDialog', true);
+    },
+
     openEditDialog() {
       this.set('editDialog', true);
     },
@@ -89,6 +162,12 @@ export default Controller.extend({
         this.set('savingEdit', false);
         this.set('editDialog', false);
       });
+    },
+
+    switchTransferBudgets() {
+      const tempBudget = this.get('transferFromBudget');
+      this.set('transferFromBudget', this.get('transferToBudget'));
+      this.set('transferToBudget', tempBudget);
     }
   }
 });

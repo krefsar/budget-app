@@ -1,10 +1,16 @@
 import Route from '@ember/routing/route';
-import { later } from '@ember/runloop';
+import RSVP from 'rsvp';
 
 export default Route.extend({
   model({ budget_id }) {
-    return this.store.findRecord('budget', budget_id, {
-      include: 'transactions'
+    const user = this.modelFor('application');
+
+    return RSVP.hash({
+      budget: this.store.findRecord('budget', budget_id, {
+        include: 'transactions'
+      }),
+      budgets: user.get('budgets'),
+      unallocated: user.get('unallocated')
     });
   },
 
