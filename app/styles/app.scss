@@ -112,7 +112,6 @@ a {
 }
 
 .expense-balance {
-  background-color: $budgetblack;
   color: white;
   padding: 1rem;
   text-align: center;
@@ -128,4 +127,12 @@ a {
   p {
     font-size: 1.5rem;
   }
+}
+
+.expense-balance--primary {
+  background-color: $budgetblack;
+}
+
+.expense-balance--accent {
+  background-color: color($accent);
 }

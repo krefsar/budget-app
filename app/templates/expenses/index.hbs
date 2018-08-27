@@ -7,8 +7,7 @@
       {{paper-icon 'keyboard-arrow-left'}}
     {{/paper-button}}
 
-    {{log selectedMonth}}
-    {{moment-format selectedMonth 'MMM YY'}}
+    {{moment-format selectedMonth 'MMM \'YY'}}
 
     {{#paper-button iconButton=true onClick=(action 'nextMonth')}}
       {{paper-icon 'keyboard-arrow-right'}}

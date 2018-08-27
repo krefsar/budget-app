@@ -1,61 +1,42 @@
 <div class='flex'>
-  {{#paper-toolbar tall=editing accent=editing}}
+  {{#paper-toolbar}}
     {{#paper-toolbar-tools}}
-      {{#unless editing}}
-        {{#paper-button iconButton=true onClick=(route-action 'goBack')}}
-          {{paper-icon 'close'}}
-        {{/paper-button}}
+      {{#paper-button iconButton=true onClick=(route-action 'goBack')}}
+        {{paper-icon 'close'}}
+      {{/paper-button}}
 
-        <h2>
-          {{expense.name}}
-        </h2>
-      {{/unless}}
+      <h2>
+        {{expense.name}}
+      </h2>
 
       <span class='flex'></span>
 
-      {{#unless editing}}
-        {{#paper-menu as |menu|}}
-          {{#menu.trigger}}
-            {{#paper-button iconButton=true}}
-              {{paper-icon 'more-vert'}}
-            {{/paper-button}}
-          {{/menu.trigger}}
+      {{#paper-menu as |menu|}}
+        {{#menu.trigger}}
+          {{#paper-button iconButton=true}}
+            {{paper-icon 'more-vert'}}
+          {{/paper-button}}
+        {{/menu.trigger}}
 
-          {{#menu.content width=2 as |content|}}
-            {{#content.menu-item onClick='editExpense'}}
-              <span>Edit</span>
-            {{/content.menu-item}}
+        {{#menu.content width=2 as |content|}}
+          {{#content.menu-item onClick='openEditDialog'}}
+            <span>Edit</span>
+          {{/content.menu-item}}
 
-            {{#content.menu-item onClick='openDeleteDialog'}}
-              <span>Delete</span>
-            {{/content.menu-item}}
-          {{/menu.content}}
-        {{/paper-menu}}
-
-      {{else}}
-        {{#paper-button onClick='finishEditing'}}
-          <span>Done</span>
-        {{/paper-button}}
-      {{/unless}}
+          {{#content.menu-item onClick='openDeleteDialog'}}
+            <span>Delete</span>
+          {{/content.menu-item}}
+        {{/menu.content}}
+      {{/paper-menu}}
     {{/paper-toolbar-tools}}
-
-    {{#if editing}}
-      <div class='layout-row layout-align-center-center'>
-        {{paper-input
-          block=true
-          disabled=savingEdit
-          value=expense.name
-          onChange=(action (mut expense.name))
-          required=true
-        }}
-      </div>
-    {{/if}}
   {{/paper-toolbar}}
 
-  <div class='expense-balance layout-column'> 
+  <div class='{{if editing "expense-balance--accent" "expense-balance--primary"}} layout-column expense-balance'> 
     <h1 class={{if (gt remainingDue 0) 'number--negative' 'number--positive'}}>Remaining: {{to-dollars remainingDue}}</h1>
 
-    <h2>{{to-dollars expense.amount}} total due by {{moment-format selectedExpenseMonth 'M'}}/{{expense.dueDay}}/{{moment-format selectedExpenseMonth 'YY'}}</h2>
+    <h2>
+      {{to-dollars expense.amount}} total due by {{moment-format selectedExpenseMonth 'M'}}/{{expense.dueDay}}/{{moment-format selectedExpenseMonth 'YY'}}
+    </h2>
 
     <div class='layout-row layout-align-start-center expense-percentage'>
       {{paper-progress-linear primary=(gte amountPaid expense.amount) warn=(lt amountPaid expense.amount) class='expense-percentage-graph' value=percentagePaid}}
@@ -91,12 +72,12 @@
     {{#paper-dialog onClose=(action 'closeDeleteDialog' 'cancel')}}
       {{#paper-toolbar}}
         {{#paper-toolbar-tools}}
-          <h3>Delete Budget</h3>
+          <h3>Delete Expense</h3>
         {{/paper-toolbar-tools}}
       {{/paper-toolbar}}
 
       {{#paper-dialog-content}}
-        <h2>Are you sure you want to delete your {{budget.name}} budget? This action cannot be undone.</h2>
+        <h2>Are you sure you want to delete your {{expense.name}} expense? This action cannot be undone.</h2>
       {{/paper-dialog-content}}
 
       {{#paper-dialog-actions class='layout-row layout-align-end-center'}}
@@ -106,6 +87,57 @@
 
         {{#paper-button disabled=deletingExpense onClick=(action 'closeDeleteDialog' 'ok')}}
           {{if deletingExpense 'Deleting...' 'Delete'}}
+        {{/paper-button}}
+      {{/paper-dialog-actions}}
+    {{/paper-dialog}}
+  {{/if}}
+
+  {{#if editDialog}}
+    {{#paper-dialog}} 
+      {{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+          <h3>Edit Expense</h3>
+        {{/paper-toolbar-tools}}
+      {{/paper-toolbar}}
+
+      {{#paper-dialog-content}}
+        {{paper-input
+          block=true
+          class='transaction-input'
+          label='Name'
+          value=expense.name
+          disabled=savingEdit
+          onChange=(action (mut expense.name))
+          required=true
+          type='text'
+        }}
+
+        {{paper-input
+          block=true
+          class='transaction-input'
+          disabled=savingEdit
+          label='Amount Due'
+          value=expense.amount
+          onChange=(action (mut expense.amount))
+          required=true
+          type='number'
+        }}
+
+        {{paper-input
+          block=true
+          class='transaction-input'
+          label='Due Date each Month'
+          disabled=savingEdit
+          value=expense.dueDay
+          onChange=(action (mut expense.dueDay))
+          required=true
+          type='number'
+        }}
+      {{/paper-dialog-content}}
+
+      {{#paper-dialog-actions class='layout-row layout-align-end-center'}}
+        {{#paper-button disabled=saveEditDisabled onClick=(action 'finishEditing')}}
+          {{if savingEdit 'Updating...' 'Update'}}
         {{/paper-button}}
       {{/paper-dialog-actions}}
     {{/paper-dialog}}

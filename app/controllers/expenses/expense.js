@@ -9,6 +9,11 @@ export default Controller.extend({
   editing: false,
   unallocated: computed.alias('model.unallocated'),
 
+  saveEditDisabled: computed('expense.{amount,dueDay,name}', function() {
+    return this.get('expense.amount') <= 0 || this.get('expense.dueDay') === null || this.get('expense.dueDay') <= 0 || this.get('expense.name').length === 0;
+  }),
+
+  editDialog: false,
   deleteDialog: false,
   savingEdit: false,
 
@@ -61,7 +66,7 @@ export default Controller.extend({
       this.set('savingEdit', true);
       this.get('expense').save().then(() => {
         this.set('savingEdit', false);
-        this.set('editing', false);
+        this.set('editDialog', false);
       });
     },
 
@@ -142,6 +147,10 @@ export default Controller.extend({
     resetForm() {
       this.set('transactionAmount', 0);
       this.set('transactionMemo', '');
+    },
+
+    openEditDialog() {
+      this.set('editDialog', true);
     }
   }
 });
