@@ -12,6 +12,10 @@ export default Controller.extend({
   deleteDialog: false,
   savingEdit: false,
 
+  saveTransactionDisabled: computed('transactionAmount', 'savingTransaction', 'unallocated', function() {
+    return this.get('transactionAmount') <= 0 || this.get('transactionAmount') > this.get('remainingDue') || this.get('savingTransaction');
+  }),
+
   expense: computed.alias('model.expense'),
 
   amountPaid: computed('transactions', function() {

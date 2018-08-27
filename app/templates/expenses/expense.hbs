@@ -52,10 +52,10 @@
     {{/if}}
   {{/paper-toolbar}}
 
-  <div class='expense-balance layout-column {{if (lte expense.remainingDue 0) "number--positive" "number--negative"}}'>
-    <h1>{{to-dollars remainingDue}}</h1>
+  <div class='expense-balance layout-column'> 
+    <h1 class={{if (gt remainingDue 0) 'number--negative' 'number--positive'}}>Remaining: {{to-dollars remainingDue}}</h1>
 
-    <h2>Due {{moment-format selectedExpenseMonth 'M'}}/{{expense.dueDay}}/{{moment-format selectedExpenseMonth 'YY'}}</h2>
+    <h2>{{to-dollars expense.amount}} total due by {{moment-format selectedExpenseMonth 'M'}}/{{expense.dueDay}}/{{moment-format selectedExpenseMonth 'YY'}}</h2>
 
     <div class='layout-row layout-align-start-center expense-percentage'>
       {{paper-progress-linear primary=(gte amountPaid expense.amount) warn=(lt amountPaid expense.amount) class='expense-percentage-graph' value=percentagePaid}}
@@ -117,7 +117,15 @@
         {{#paper-toolbar-tools}}
           <h3>Pay Expense</h3>
         {{/paper-toolbar-tools}}
-      {{/paper-toolbar}}
+      {{/paper-toolbar}}            {{#body.row as |row|}}
+              {{#row.cell}}
+                Unallocated before:
+              {{/row.cell}}
+
+              {{#row.cell}}
+                {{unallocated.balance}}
+              {{/row.cell}}
+            {{/body.row}}
 
       {{#paper-dialog-content}}
         <div class='layout-row layout-align-start-start'>
@@ -125,6 +133,7 @@
             block=true
             class='transaction-input'
             label='Amount'
+            min=0
             max=remainingDue
             disabled=savingTransaction
             value=transactionAmount
@@ -145,6 +154,30 @@
           value=transactionMemo
           onChange=(action (mut transactionMemo))
         }}
+
+        {{#paper-data-table as |table|}}
+          {{#table.body as |body|}}
+            {{#body.row as |row|}}
+              {{#row.cell}}
+                Unallocated before:
+              {{/row.cell}}
+
+              {{#row.cell numeric=true}}
+                {{to-dollars unallocated.balance}}
+              {{/row.cell}}
+            {{/body.row}}
+
+            {{#body.row as |row|}}
+              {{#row.cell}}
+                Unallocated after:
+              {{/row.cell}}
+
+              {{#row.cell numeric=true}}
+                {{to-dollars (minus-from unallocated.balance transactionAmount)}}
+              {{/row.cell}}
+            {{/body.row}}
+          {{/table.body}}
+        {{/paper-data-table}}
       {{/paper-dialog-content}}
 
       {{#paper-dialog-actions class='layout-row layout-align-end-center'}}
@@ -152,7 +185,7 @@
           Cancel
         {{/paper-button}}
 
-        {{#paper-button disabled=(or (lte transactionAmount 0) savingTransaction) onClick=(action 'closeTransactionDialog' 'ok')}}
+        {{#paper-button disabled=saveTransactionDisabled onClick=(action 'closeTransactionDialog' 'ok')}}
           {{if savingTransaction 'Paying...' 'Pay'}}
         {{/paper-button}}
       {{/paper-dialog-actions}}
