@@ -162,7 +162,7 @@
     {{#paper-dialog fullscreen=true onClose=(action 'closeTransferDialog' 'cancel')}}
       {{#paper-toolbar}}
         {{#paper-toolbar-tools}}
-          <h3>Transfer Funds</h3>
+          <h3>Transfer Funds - {{budget.name}}</h3>
         {{/paper-toolbar-tools}}
       {{/paper-toolbar}}
 
@@ -178,34 +178,23 @@
           type='number'
         }}
 
-        <h1>From</h1>
+        {{#paper-radio-group
+          disabled=savingTransfer
+          groupValue=fromBudget
+          onChange=(action (mut fromBudget)) as |group|}}
+          {{#group.radio value=true}}<h1>From</h1>{{/group.radio}}
+          {{#group.radio value=false}}<h1>To</h1>{{/group.radio}}
+        {{/paper-radio-group}}
+
         {{#paper-select
           disabled=savingTransfer
           label="Budget"
           class='transfer-select'
           options=allBudgetsSorted
-          selected=transferFromBudget
-          onChange=(action (mut transferFromBudget))
+          selected=transferBudget
+          onChange=(action (mut transferBudget))
           as |fromBudget|}}
             <span class='select-option'>{{fromBudget.name}}</span>
-        {{/paper-select}}   
-
-        <div>
-          {{#paper-button iconButton=true onClick=(action 'switchTransferBudgets')}}
-            {{paper-icon 'swap-vert'}}
-          {{/paper-button}}
-        </div>
-
-        <h1>To</h1>
-        {{#paper-select
-          disabled=savingTransfer
-          label="Budget"
-          class='transfer-select'
-          options=allBudgetsSorted
-          selected=transferToBudget
-          onChange=(action (mut transferToBudget))
-          as |toBudget|}}
-            <span class='select-option'>{{toBudget.name}}</span>
         {{/paper-select}}   
       {{/paper-dialog-content}}
 

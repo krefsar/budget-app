@@ -23,8 +23,7 @@ export default Controller.extend({
   deleteDialog: false,
   deletingBudget: false,
   transferAmount: 0,
-  transferFromBudget: null,
-  transferToBudget: null,
+  transferBudget: null,
 
   transactionSorting: ['date:desc'],
   sortedTransactions: computed.sort('transactions', 'transactionSorting'),
@@ -32,6 +31,8 @@ export default Controller.extend({
 
   savingEdit: false,
   editDialog: false,
+
+  fromBudget: true,
 
   actions: {
     openDeleteDialog() {
@@ -100,8 +101,8 @@ export default Controller.extend({
         this.send('resetTransferForm');
       } else {
         this.set('savingTransfer', true);
-        const fromBudget = this.get('transferFromBudget');
-        const toBudget = this.get('transferToBudget');
+        const fromBudget = this.get('fromBudget') ? this.get('transferBudget') : this.get('budget');
+        const toBudget = this.get('fromBudget') ? this.get('budget') : this.get('transferBudget');
 
         const additionTx = this.store.createRecord('transaction', {
           amount: this.get('transferAmount'),
@@ -143,8 +144,8 @@ export default Controller.extend({
 
     resetTransferForm() {
       this.set('transferAmount', 0);
-      this.set('transferFromBudget', null);
-      this.set('transferToBudget', null);
+      this.set('transferBudget', null);
+      this.set('fromBudget', true);
     },
 
     transferFunds() {
