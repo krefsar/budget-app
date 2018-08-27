@@ -1,55 +1,34 @@
 <div class='flex'>
-  {{#paper-toolbar tall=editing accent=editing}}
+  {{#paper-toolbar}}
     {{#paper-toolbar-tools}}
-      {{#unless editing}}
-        {{#paper-button iconButton=true onClick=(route-action 'goBack')}}
-          {{paper-icon 'close'}}
-        {{/paper-button}}
+      {{#paper-button iconButton=true onClick=(route-action 'goBack')}}
+        {{paper-icon 'close'}}
+      {{/paper-button}}
 
-        <h2>
-          {{budget.name}}
-        </h2>
-      {{/unless}}
+      <h2>
+        {{budget.name}}
+      </h2>
 
       <span class='flex'></span>
 
-      {{#unless editing}}
-        {{#paper-menu as |menu|}}
-          {{#menu.trigger}}
-            {{#paper-button iconButton=true}}
-              {{paper-icon 'more-vert'}}
-            {{/paper-button}}
-          {{/menu.trigger}}
+      {{#paper-menu as |menu|}}
+        {{#menu.trigger}}
+          {{#paper-button iconButton=true}}
+            {{paper-icon 'more-vert'}}
+          {{/paper-button}}
+        {{/menu.trigger}}
 
-          {{#menu.content width=2 as |content|}}
-            {{#content.menu-item onClick='editBudget'}}
-              <span>Edit</span>
-            {{/content.menu-item}}
+        {{#menu.content width=2 as |content|}}
+          {{#content.menu-item onClick='openEditDialog'}}
+            <span>Edit</span>
+          {{/content.menu-item}}
 
-            {{#content.menu-item onClick='openDeleteDialog'}}
-              <span>Delete</span>
-            {{/content.menu-item}}
-          {{/menu.content}}
-        {{/paper-menu}}
-
-      {{else}}
-        {{#paper-button onClick='finishEditing'}}
-          <span>Done</span>
-        {{/paper-button}}
-      {{/unless}}
+          {{#content.menu-item onClick='openDeleteDialog'}}
+            <span>Delete</span>
+          {{/content.menu-item}}
+        {{/menu.content}}
+      {{/paper-menu}}
     {{/paper-toolbar-tools}}
-
-    {{#if editing}}
-      <div class='layout-row layout-align-center-center'>
-        {{paper-input
-          block=true
-          disabled=savingEdit
-          value=budget.name
-          onChange=(action (mut budget.name))
-          required=true
-        }}
-      </div>
-    {{/if}}
   {{/paper-toolbar}}
 
   <div class='budget-balance layout-column layout-align-center-center {{if (lte budget.balance 0) "number--negative" "number--positive"}}'>
@@ -141,6 +120,35 @@
 
         {{#paper-button disabled=(or (lte transactionAmount 0) savingTransaction) onClick=(action 'closeTransactionDialog' 'ok')}}
           {{if savingTransaction 'Spending...' 'Spend'}}
+        {{/paper-button}}
+      {{/paper-dialog-actions}}
+    {{/paper-dialog}}
+  {{/if}}
+
+  {{#if editDialog}}
+    {{#paper-dialog}} 
+      {{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+          <h3>Edit Budget</h3>
+        {{/paper-toolbar-tools}}
+      {{/paper-toolbar}}
+
+      {{#paper-dialog-content}}
+        {{paper-input
+          block=true
+          class='transaction-input'
+          label='Name'
+          value=budget.name
+          disabled=savingEdit
+          onChange=(action (mut budget.name))
+          required=true
+          type='text'
+        }}
+      {{/paper-dialog-content}}
+
+      {{#paper-dialog-actions class='layout-row layout-align-end-center'}}
+        {{#paper-button disabled=saveEditDisabled onClick=(action 'finishEditing')}}
+          {{if savingEdit 'Updating...' 'Update'}}
         {{/paper-button}}
       {{/paper-dialog-actions}}
     {{/paper-dialog}}

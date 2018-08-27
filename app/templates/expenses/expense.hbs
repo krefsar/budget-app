@@ -31,7 +31,7 @@
     {{/paper-toolbar-tools}}
   {{/paper-toolbar}}
 
-  <div class='{{if editing "expense-balance--accent" "expense-balance--primary"}} layout-column expense-balance'> 
+  <div class='expense-balance--primary layout-column expense-balance'> 
     <h1 class={{if (gt remainingDue 0) 'number--negative' 'number--positive'}}>Remaining: {{to-dollars remainingDue}}</h1>
 
     <h2>

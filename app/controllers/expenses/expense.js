@@ -6,7 +6,6 @@ export default Controller.extend({
   queryParams: ['selectedExpenseMonth'],
   selectedExpenseMonth: moment().startOf('month').valueOf(),
   expense: computed.alias('model'),
-  editing: false,
   unallocated: computed.alias('model.unallocated'),
 
   saveEditDisabled: computed('expense.{amount,dueDay,name}', function() {
@@ -58,10 +57,6 @@ export default Controller.extend({
   transactionMemo: '',
 
   actions: {
-    editExpense() {
-      this.set('editing', true);
-    },
-
     finishEditing() {
       this.set('savingEdit', true);
       this.get('expense').save().then(() => {

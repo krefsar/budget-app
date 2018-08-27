@@ -2,9 +2,7 @@ import Controller from '@ember/controller';
 import { computed } from '@ember/object';
 
 export default Controller.extend({
-  queryParams: ['editing'],
   transactionDialog: false,
-  editing: false,
   budget: computed.alias('model'),
   transactions: computed.alias('model.transactions'),
   transactionAmount: 0,
@@ -18,6 +16,7 @@ export default Controller.extend({
   savingTransaction: false,
 
   savingEdit: false,
+  editDialog: false,
 
   actions: {
     openDeleteDialog() {
@@ -80,15 +79,15 @@ export default Controller.extend({
       this.set('transactionMemo', '');
     },
 
-    editBudget() {
-      this.set('editing', true);
+    openEditDialog() {
+      this.set('editDialog', true);
     },
 
     finishEditing() {
       this.set('savingEdit', true);
       this.get('budget').save().then(() => {
         this.set('savingEdit', false);
-        this.set('editing', false);
+        this.set('editDialog', false);
       });
     }
   }
