@@ -24,15 +24,11 @@ export default Controller.extend({
         this.set('savingBudget', true);
         const newBudget = this.store.createRecord('budget', {
           name: this.get('newBudgetName'),
-          balance: 0
+          balance: 0,
+          user: this.get('user')
         });
 
         newBudget.save()
-          .then(budget => {
-            const user = this.get('user');
-            user.get('budgets').pushObject(budget);
-            return user.save();
-          })
           .then(() => {
             this.set('savingBudget', false);
             this.set('newBudgetDialog', false);

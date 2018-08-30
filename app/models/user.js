@@ -6,7 +6,7 @@ const { attr, belongsTo, hasMany, Model } = DS;
 export default Model.extend({
   name: attr('string'),
 
-  unallocated: belongsTo('budget'),
+  // unallocated: belongsTo('budget'),
   budgets: hasMany('budget'),
   expenses: hasMany('expense')
 });
