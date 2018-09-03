@@ -5,7 +5,7 @@
 
 {{#paper-data-table as |table|}}
   {{#table.body as |body|}}
-    {{#each sortedTransactions as |transaction|}}
+    {{#each unallocated.sortedTransactions as |transaction|}}
       {{#body.row as |row|}}
         {{#row.cell}}
           {{moment-format transaction.date 'M/D/YY'}}

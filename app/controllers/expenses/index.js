@@ -56,19 +56,15 @@ export default Controller.extend({
         const newExpense = this.store.createRecord('expense', {
           name: this.get('newExpenseName'),
           amount: this.get('newExpenseAmount'),
-          dueDay: this.get('newExpenseDay')
+          dueDay: this.get('newExpenseDay'),
+          user: this.get('user')
         });
 
         newExpense.save()
-          .then((expense) => {
-            const user = this.get('user');
-            user.get('expenses').pushObject(expense);
-            return user.save();
-          })
           .then(() => {
-            this.send('resetExpenseForm');
             this.set('savingExpense', false);
             this.set('newExpenseDialog', false);
+            this.send('resetExpenseForm');
           });
       }
     },

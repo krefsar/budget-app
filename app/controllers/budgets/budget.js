@@ -73,7 +73,7 @@ export default Controller.extend({
         });
 
         newTransaction.save()
-          .then((newTrans) => {
+          .then(newTrans => {
             const budget = this.get('budget');
             budget.get('transactions').pushObject(newTrans);
 
