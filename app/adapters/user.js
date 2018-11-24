@@ -1,5 +1,4 @@
 import ApplicationAdapter from './application';
-import ENV from '../config/environment';
 import { inject as service } from '@ember/service';
 
 export default ApplicationAdapter.extend({

@@ -31,19 +31,21 @@ module.exports = function(environment) {
     routeIfAlreadyAuthenticated: 'authenticated.overview'
   };
 
-  ENV.torii = {
+  ENV['torii'] = {
     providers: {
       'google-oauth2-bearer': {
         apiKey: "333503333885-idvptdotpcsknodncfmh307kljj54ugn.apps.googleusercontent.com",
         redirectUri: "http://localhost:4200/oauth2callback",
-        serverTokenRefreshEndpoint: 'http://localhost:3000/refresh-token',
-
+        serverTokenRefreshEndpoint: `http://localhost:3000/refresh-token`,
       }
     }
   }
 
   if (environment === 'development') {
     ENV.APP.host = 'http://localhost:3000';
+
+    ENV.torii.providers['google-oauth2-bearer'].redirectUri = 'http://localhost:4200/oauth2callback';
+    ENV.torii.providers['google-oauth2-bearer'].serverTokenRefreshEndpoint = 'http://localhost:3000/refresh-token';
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
     // ENV.APP.LOG_TRANSITIONS = true;
@@ -65,7 +67,10 @@ module.exports = function(environment) {
 
   if (environment === 'production') {
     ENV.APP.host = 'https://easy-budget-server.herokuapp.com';
+
     // here you can enable a production-specific feature
+    ENV.torii.providers['google-oauth2-bearer'].redirectUri = 'https://easy-budget.herokuapp.com/oauth2callback';
+    ENV.torii.providers['google-oauth2-bearer'].serverTokenRefreshEndpoint = 'https://easy-budget-server.herokuapp.com/refresh-token';
   }
 
   return ENV;
