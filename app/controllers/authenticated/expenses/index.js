@@ -77,13 +77,11 @@ export default Controller.extend({
 
     prevMonth() {
       const newMonth = moment(this.get('selectedMonth')).subtract(1, 'months');
-      console.log(newMonth.toDate());
       this.set('selectedMonth', newMonth);
     },
     
     nextMonth() {
       const newMonth = moment(this.get('selectedMonth')).add(1, 'months');
-      console.log(newMonth.toDate());
       this.set('selectedMonth', newMonth);
     }
   }

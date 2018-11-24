@@ -6,7 +6,7 @@
 
 <div class='flex page page--dark layout-column'>
   {{#each sortedBudgets as |budget|}}
-    {{#link-to 'budgets.budget' budget.id}}
+    {{#link-to 'authenticated.budgets.budget' budget.id}}
       {{#paper-card as |card|}}
         {{#card.title as |title|}}
           {{#title.text as |text|}}

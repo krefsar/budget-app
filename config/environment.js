@@ -23,7 +23,27 @@ module.exports = function(environment) {
     }
   };
 
+  ENV['ember-cli-mirage'] = {
+    enabled: false
+  };
+
+  ENV['ember-simple-auth'] = {
+    routeIfAlreadyAuthenticated: 'authenticated.overview'
+  };
+
+  ENV.torii = {
+    providers: {
+      'google-oauth2-bearer': {
+        apiKey: "333503333885-idvptdotpcsknodncfmh307kljj54ugn.apps.googleusercontent.com",
+        redirectUri: "http://localhost:4200/oauth2callback",
+        serverTokenRefreshEndpoint: 'http://localhost:3000/refresh-token',
+
+      }
+    }
+  }
+
   if (environment === 'development') {
+    ENV.APP.host = 'http://localhost:3000';
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
     // ENV.APP.LOG_TRANSITIONS = true;

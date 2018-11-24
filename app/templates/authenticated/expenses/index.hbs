@@ -17,7 +17,7 @@
 
 <div class='flex page page--dark layout-column'>
   {{#each sortedExpenses as |expense|}}
-    {{#link-to 'expenses.expense' expense.id (query-params selectedExpenseMonth=selectedMonth)}}
+    {{#link-to 'authenticated.expenses.expense' expense.id (query-params selectedExpenseMonth=selectedMonth)}}
       {{#paper-card as |card|}}
         {{#card.title as |title|}}
           {{#title.text as |text|}}

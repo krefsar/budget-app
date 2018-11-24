@@ -1,9 +1,12 @@
+import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import RSVP from 'rsvp';
 
 export default Route.extend({
+  userService: service(),
+
   model({ expense_id }) {
-    const user = this.modelFor('application');
+    const user = this.userService.currentUser;
 
     return RSVP.hash({
       unallocated: user.get('unallocated'),
@@ -13,7 +16,7 @@ export default Route.extend({
   
   actions: {
     goBack() {
-      this.transitionTo('expenses');
+      this.transitionTo('authenticated.expenses');
     }
   }
 });

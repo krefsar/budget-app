@@ -1,0 +1,12 @@
+<div class='flex layout-column app-main'>
+  {{outlet}}
+</div>
+
+<div class='layout-row layout-align-space-around-center nav-bar'>
+  {{paper-link 'Overview' 'authenticated.overview' class='flex'}}
+  {{paper-link 'Budgets' 'authenticated.budgets' class='flex'}}
+  {{paper-link 'Expenses' 'authenticated.expenses' class='flex'}}
+  {{#paper-button iconButton=true onClick=(action 'logout') class="nav-button"}}
+    {{paper-icon 'logout'}}
+  {{/paper-button}}
+</div>

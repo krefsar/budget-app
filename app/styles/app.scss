@@ -36,6 +36,12 @@ a {
   bottom: 0;
   width: 100%;
   height: 6rem;
+
+  .nav-button {
+    height: 100%;
+    border-radius: 0;
+    margin: 0;
+  }
 }
 
 .paper-link {
@@ -147,4 +153,19 @@ a {
 
 .text--disabled {
   color: $budgetblack;
+}
+
+.login-page {
+  background-color: $budgetblack;
+  height: 100%;
+
+  h1 {
+    font-size: 6rem;
+    color: white;
+  }
+}
+
+.google-login {
+  font-size: 2rem;
+  padding: 1rem;
 }

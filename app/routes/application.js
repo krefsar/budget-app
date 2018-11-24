@@ -1,7 +1,5 @@
 import Route from '@ember/routing/route';
+import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
-export default Route.extend({
-  model() {
-    return this.store.findRecord('user', 1, { include: 'unallocated,budgets,expenses' });
-  }
+export default Route.extend(ApplicationRouteMixin, {
 });

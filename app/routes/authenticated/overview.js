@@ -1,9 +1,13 @@
+import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
+import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import RSVP from 'rsvp';
 
-export default Route.extend({
+export default Route.extend(AuthenticatedRouteMixin, {
+  userService: service(),
+
   model() {
-    const user = this.modelFor('application');
+    const user = this.userService.currentUser;
     const unallocated = user.get('unallocated');
 
     return RSVP.hash({
