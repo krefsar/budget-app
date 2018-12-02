@@ -71,7 +71,7 @@ module.exports = function(environment) {
       providers: {
         'google-oauth2-bearer': {
           apiKey: "333503333885-idvptdotpcsknodncfmh307kljj54ugn.apps.googleusercontent.com",
-          redirectUri: "https://easy-budget.herokuapp.com/oauth2callback",
+          redirectUri: "http://ezbudget.martinezwebdev.com/oauth2callback",
           serverTokenRefreshEndpoint: `https://easy-budget-server.herokuapp.com/refresh-token`,
         }
       }
